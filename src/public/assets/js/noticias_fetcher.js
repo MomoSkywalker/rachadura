@@ -49,7 +49,7 @@ async function buscarNoticias(categoria) {
     todasNoticias = todasNoticias.concat(noticias);
   }
 
-  const dbPath = './db/db.json';
+  const dbPath = './data/db.json';
   const db = JSON.parse(fs.readFileSync(dbPath, 'utf8'));
   db.noticias = todasNoticias;
 
