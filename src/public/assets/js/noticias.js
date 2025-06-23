@@ -55,7 +55,7 @@ if (noticiasContainer) {
   }
 
   // Busca todas as notícias e inicializa filtro
-  fetch('https://rachadura.onrender.com/noticias')
+  fetch('https://rachadura.onrender.com/api/noticias')
     .then(response => response.json())
     .then(noticias => {
       todasNoticias = noticias;
@@ -78,7 +78,7 @@ if (tituloNoticia && dataNoticia && categoriaNoticia && conteudoNoticia && linkO
   const noticiaId = params.get('id');
 
   if (noticiaId) {
-    fetch(`https://rachadura.onrender.com/noticias/${noticiaId}`)
+    fetch(`https://rachadura.onrender.com/api/noticias/${noticiaId}`)
       .then(response => {
         if (!response.ok) {
           throw new Error('Notícia não encontrada');
