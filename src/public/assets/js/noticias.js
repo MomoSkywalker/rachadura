@@ -30,7 +30,7 @@ if (noticiasContainer) {
       const card = document.createElement('div');
       card.className = 'noticia-card';
       card.onclick = () => {
-        window.location.href = `detalhes_noticia.html?id=${noticia.id}`;
+        window.location.href = `/views/detalhes_noticia.html?id=${noticia.id}`;
       };
 
       card.innerHTML = `
