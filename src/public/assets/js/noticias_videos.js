@@ -27,6 +27,7 @@ async function buscarVideosMultiplasPalavras() {
       const res = await fetch(url);
       const data = await res.json();
       console.log("Resposta da API YouTube:", data);
+      console.log("IDs de vídeo carregados:", videoIds);
       const ids = data.items.map(item => item.id.videoId).filter(Boolean);
       videoIds.push(...ids);
     } catch (err) {
@@ -42,7 +43,7 @@ async function buscarVideosMultiplasPalavras() {
 }
 
 // Função chamada pela API do YouTube
-function onYouTubeIframeAPIReady() {
+window.onYouTubeIframeAPIReady = function() {
   buscarVideosMultiplasPalavras();
 }
 
