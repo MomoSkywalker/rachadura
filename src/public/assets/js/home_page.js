@@ -99,7 +99,7 @@ function renderizarMarcadores() {
   console.log(`${fullMarkers.length} marcadores renderizados no fullMap`);
 }
 
-function initMaps() {
+window.initMaps = function(){
   console.log("Inicializando mapas...");
   
   // Coordenadas padrão (ex: Centro de Belo Horizonte)
