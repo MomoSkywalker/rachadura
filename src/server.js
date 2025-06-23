@@ -16,7 +16,7 @@ app.use('/views', express.static(path.join(__dirname, 'public', 'views')));
 
 // Servir a página inicial
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'views', 'noticias.html'));
+  res.sendFile(path.join(__dirname, 'public', 'views', 'home_page.html'));
 });
 
 // Servir a API do JSON Server em /api
