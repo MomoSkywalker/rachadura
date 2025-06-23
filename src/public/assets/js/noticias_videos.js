@@ -26,6 +26,7 @@ async function buscarVideosMultiplasPalavras() {
     try {
       const res = await fetch(url);
       const data = await res.json();
+      console.log("Resposta da API YouTube:", data);
       const ids = data.items.map(item => item.id.videoId).filter(Boolean);
       videoIds.push(...ids);
     } catch (err) {
