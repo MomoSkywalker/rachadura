@@ -14,7 +14,7 @@
 
     // --- Variáveis de Estado ---
     let allFaqData = []; // Armazena todos os dados do FAQ após o carregamento inicial
-    const dataFilePath = 'prt.https://rachadura.onrender.com/api/faq'; // Caminho para o arquivo JSON
+    const dataFilePath = 'https://rachadura.onrender.com/api/faq'; // Caminho para o arquivo JSON
 
     // --- Funções de Utilitário para UI (Exibição de Loader/Mensagens) ---
 
