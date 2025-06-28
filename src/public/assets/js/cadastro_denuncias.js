@@ -161,6 +161,7 @@ createApp({
         };
 
         this.enderecoBloqueado = false;
+        window.location.href = "/views/home_page.html";
       });
     }
 
