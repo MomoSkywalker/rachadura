@@ -266,7 +266,7 @@ body {
 }
 
 .faq-answer-content {
-    max-height: 0;
+    max-height: 0; /* Estado inicial: oculto */
     overflow: hidden;
     transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1);
     color: var(--color-text-muted);
