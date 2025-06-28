@@ -46,7 +46,7 @@ header {
 
 footer {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     padding: 12px 16px;
     background-color: var(--cor-cartao);
@@ -455,6 +455,32 @@ select, option {
     color: #f5f0ff;
 
 }
+
+.navbar .botao,
+.navbar .botao:link,
+.navbar .botao:visited,
+.navbar .botao:active,
+.navbar .botao:hover,
+.footer, .footer-button {
+  text-decoration: none !important;
+}
+
+.footer-button {
+  background-color: var(--cor-cartao);
+  border-radius: 12px;
+  padding: 18px 22px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  cursor: pointer;
+  text-decoration-color: #B3A5D8;
+}
+
+.footer-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  background-color: #f5f0ff;
+}
+
+
 
 @media (max-width: 600px) {
   .filtro-categoria-card {
