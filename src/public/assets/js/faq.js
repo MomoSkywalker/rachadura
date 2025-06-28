@@ -51,47 +51,43 @@
      * @returns {HTMLElement} O elemento div representando o item do FAQ.
      */
     function createFaqItem(faq) {
-        const faqItem = document.createElement('div');
-        faqItem.classList.add('faq-item', 'is-active'); // Continua com 'is-active' para iniciar aberto
-        faqItem.setAttribute('role', 'article');
-        faqItem.setAttribute('aria-labelledby', `question-${faq.id}`);
+    const faqItem = document.createElement('div');
+    faqItem.classList.add('faq-item');
+    faqItem.setAttribute('role', 'article');
+    faqItem.setAttribute('aria-labelledby', `question-${faq.id}`);
 
-        const questionHeader = document.createElement('div');
-        questionHeader.classList.add('faq-question-header');
-        questionHeader.setAttribute('role', 'button'); // Mantemos role="button" para acessibilidade, mas ele não será clicável para toggle
-        questionHeader.setAttribute('aria-expanded', 'true'); // Sempre true
-        questionHeader.setAttribute('tabindex', '0'); // Torna o elemento focável para navegação, mas não fará toggle
-        questionHeader.setAttribute('id', `question-${faq.id}`);
+    const questionHeader = document.createElement('div');
+    questionHeader.classList.add('faq-question-header');
+    questionHeader.setAttribute('role', 'button');
+    questionHeader.setAttribute('aria-expanded', 'false'); // começa fechado
+    questionHeader.setAttribute('tabindex', '0');
+    questionHeader.setAttribute('id', `question-${faq.id}`);
+    questionHeader.innerHTML = `<h3>${faq.pergunta}</h3><span class="toggle-icon">+</span>`;
 
-        questionHeader.innerHTML = `<h3>${faq.pergunta}</h3><span class="toggle-icon">-</span>`; // Ícone '-' permanece
+    const answerContent = document.createElement('div');
+    answerContent.classList.add('faq-answer-content');
+    answerContent.setAttribute('role', 'region');
+    answerContent.setAttribute('aria-hidden', 'true'); // começa fechado
+    answerContent.style.maxHeight = "0";
 
-        const answerContent = document.createElement('div');
-        answerContent.classList.add('faq-answer-content');
-        answerContent.setAttribute('role', 'region');
-        answerContent.setAttribute('aria-hidden', 'false'); // Sempre false (visível)
+    const paragraphs = faq.resposta.split('\n\n').map(p => `<p>${p.trim()}</p>`).join('');
+    answerContent.innerHTML = paragraphs;
 
-        const paragraphs = faq.resposta.split('\n\n').map(p => `<p>${p.trim()}</p>`).join('');
-        answerContent.innerHTML = paragraphs;
-        
-        // REMOVIDO: Listeners para expandir/colapsar
-        // questionHeader.addEventListener('click', () => toggleFaqAnswer(faqItem, questionHeader));
-        // questionHeader.addEventListener('keydown', (event) => {
-        //     if (event.key === 'Enter' || event.key === ' ') {
-        //         event.preventDefault();
-        //         toggleFaqAnswer(faqItem, questionHeader);
-        //     }
-        // });
+    // Adiciona evento de abrir/fechar
+    questionHeader.addEventListener('click', () => toggleFaqAnswer(faqItem, questionHeader));
+    questionHeader.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            toggleFaqAnswer(faqItem, questionHeader);
+        }
+    });
 
-        faqItem.appendChild(questionHeader);
-        faqItem.appendChild(answerContent);
-        
-        // Define max-height após a criação para a transição inicial (ainda importante para o layout)
-        setTimeout(() => {
-            answerContent.style.maxHeight = answerContent.scrollHeight + "px";
-        }, 0);
+    faqItem.appendChild(questionHeader);
+    faqItem.appendChild(answerContent);
 
-        return faqItem;
-    }
+    return faqItem;
+}
+
 
     /**
      * Renderiza um array de objetos FAQ no container DOM.
@@ -115,23 +111,23 @@
      * @param {HTMLElement} faqItem - O elemento div.faq-item pai.
      * @param {HTMLElement} questionHeader - O elemento div.faq-question-header.
      */
-    // function toggleFaqAnswer(faqItem, questionHeader) {
-    //     const answerContent = faqItem.querySelector('.faq-answer-content');
-    //     const toggleIcon = questionHeader.querySelector('.toggle-icon');
-        
-    //     const isActive = faqItem.classList.toggle('is-active');
+function toggleFaqAnswer(faqItem, questionHeader) {
+    const answerContent = faqItem.querySelector('.faq-answer-content');
+    const toggleIcon = questionHeader.querySelector('.toggle-icon');
 
-    //     questionHeader.setAttribute('aria-expanded', isActive);
-    //     answerContent.setAttribute('aria-hidden', !isActive);
+    const isActive = faqItem.classList.toggle('is-active');
+    questionHeader.setAttribute('aria-expanded', isActive);
+    answerContent.setAttribute('aria-hidden', !isActive);
 
-    //     if (isActive) {
-    //         answerContent.style.maxHeight = answerContent.scrollHeight + "px"; 
-    //         toggleIcon.textContent = '-';
-    //     } else {
-    //         answerContent.style.maxHeight = "0";
-    //         toggleIcon.textContent = '+';
-    //     }
-    // }
+    if (isActive) {
+        answerContent.style.maxHeight = answerContent.scrollHeight + "px";
+        toggleIcon.textContent = '-';
+    } else {
+        answerContent.style.maxHeight = "0";
+        toggleIcon.textContent = '+';
+    }
+}
+
 
     // --- Lógica Principal: Carregamento e Filtragem de Dados ---
 
