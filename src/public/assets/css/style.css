@@ -505,6 +505,7 @@ select, option {
   background: #111;
 }
 
+
 @media (max-width: 700px) {
   #player {
     width: 100vw;
