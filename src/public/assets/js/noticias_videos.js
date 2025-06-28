@@ -18,7 +18,7 @@ let currentIndex = 0;
 
 
 async function buscarVideosMultiplasPalavras() {
-  const publishedAfter = '2025-01-01T00:00:00Z';
+  const publishedAfter = '2025-04-01T00:00:00Z';
 
   for (let palavra of palavrasChave) {
     const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=3&q=${encodeURIComponent(palavra)}&regionCode=BR&relevanceLanguage=pt&publishedAfter=${publishedAfter}&order=date&key=${apiKey}`;
