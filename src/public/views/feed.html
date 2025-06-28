@@ -17,7 +17,7 @@
     <div id="feed" class="feed"></div>
   </div>
   <script>
-    fetch('https://rachadura.onrender.com/feed')
+    fetch('https://rachadura.onrender.com/api/feed')
   .then(response => response.json())
   .then(data => {
     const feed = document.getElementById('feed');
