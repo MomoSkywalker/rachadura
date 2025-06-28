@@ -1,20 +1,32 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8" />
   <title>Portal de Notícias</title>
   <link rel="stylesheet" href="../assets/css/style.css" />
 </head>
+
 <body>
   <header>
-    <h1>Últimas Notícias</h1>
+    <a href="/views/home_page.html"><img src="../assets/imgs/home-icon.png" alt="home" class="icone"></a>
+    <h1 class="titulo-header" id="header-title">Radar Urbano</h1>
+    <a href="/views/perfil.html"><img src="../assets/imgs/perfil-icon.png" alt="perfil" class="icone"></a>
   </header>
-
-  <div id="player-container">
-    <div id="player"></div>
-  </div>
-
+  <main>
+    <div class="cartao">
+      <p class="titulo-cartao" id="cartao-title">Últimas Notícias</p>
+      <div class="form-group">
+        <div id="player-container" class="container-noticias-videos">
+        <div id="player"></div>
+      </div>
+    </div>
+  </main>
   <script src="https://www.youtube.com/iframe_api"></script>
   <script src="../assets/js/noticias_videos.js"></script>
+  <footer class="footer">
+    <a href="/views/faq.html" class="footer-button">Perguntas Frequentes</a>
+  </footer>
 </body>
+
 </html>

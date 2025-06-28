@@ -1,6 +1,5 @@
 const apiKey = 'AIzaSyClCYPKTgtXacIp3aB7rDrcldR62Ht8JCs';
 
-
 const palavrasChave = [
   "buracos na rua Belo Horizonte",
   "esgoto a céu aberto BH",
@@ -16,8 +15,19 @@ let videoIds = [];
 let player;
 let currentIndex = 0;
 
+// Função para resetar variáveis e player
+function resetVideos() {
+  videoIds = [];
+  currentIndex = 0;
+  // Limpa o player se ele já existe
+  const playerDiv = document.getElementById('player');
+  if (playerDiv) playerDiv.innerHTML = "";
+  player = null;
+}
 
 async function buscarVideosMultiplasPalavras() {
+  resetVideos();
+
   const publishedAfter = '2025-04-01T00:00:00Z';
 
   for (let palavra of palavrasChave) {
@@ -26,14 +36,15 @@ async function buscarVideosMultiplasPalavras() {
     try {
       const res = await fetch(url);
       const data = await res.json();
-      console.log("Resposta da API YouTube:", data);
-      console.log("IDs de vídeo carregados:", videoIds);
       const ids = data.items.map(item => item.id.videoId).filter(Boolean);
       videoIds.push(...ids);
     } catch (err) {
       console.error(`Erro ao buscar vídeos para "${palavra}":`, err);
     }
   }
+
+  // Remove IDs duplicados
+  videoIds = [...new Set(videoIds)];
 
   if (videoIds.length > 0) {
     iniciarPlayer();
@@ -43,7 +54,7 @@ async function buscarVideosMultiplasPalavras() {
 }
 
 // Função chamada pela API do YouTube
-window.onYouTubeIframeAPIReady = function() {
+window.onYouTubeIframeAPIReady = function () {
   buscarVideosMultiplasPalavras();
 }
 
@@ -67,13 +78,12 @@ function iniciarPlayer() {
   });
 }
 
-
 function onPlayerReady(event) {
   event.target.playVideo();
 
   setInterval(() => {
+    if (videoIds.length === 0) return;
     currentIndex = (currentIndex + 1) % videoIds.length;
     player.loadVideoById(videoIds[currentIndex]);
-  }, 10000); 
+  }, 10000);
 }
-

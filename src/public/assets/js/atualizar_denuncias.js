@@ -225,7 +225,7 @@ if (nomePaginaAtual === 'atualizar_denuncia.html') {
                 return;
             }
         } else {
-            if (headerTitleEl) headerTitleEl.textContent = "Nova Denúncia";
+            if (headerTitleEl) headerTitleEl.textContent = "Radar Urbano";
             if (cartaoTitleEl) cartaoTitleEl.textContent = "Criar Nova Denúncia";
             if (btnDelete) btnDelete.style.display = 'none';
             denunciaParaEdicao.timeline = [];
@@ -355,7 +355,7 @@ if (nomePaginaAtual === 'atualizar_denuncia.html') {
 
     if (btnBack) {
         btnBack.addEventListener('click', () => {
-            window.location.href = 'denuncias.html';
+            window.location.href = '/views/home_page.html';
         });
     }
 
