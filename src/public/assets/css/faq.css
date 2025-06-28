@@ -266,9 +266,9 @@ body {
 }
 
 .faq-answer-content {
-    max-height: 0; /* Estado inicial: oculto */
+    max-height: 0;
     overflow: hidden;
-    transition: max-height 0.4s ease-out, padding 0.4s ease-out; /* Transição suave */
+    transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1);
     color: var(--color-text-muted);
     font-size: 15px;
     padding: 0 var(--spacing-md); /* Padding horizontal, vertical é 0 quando fechado */
