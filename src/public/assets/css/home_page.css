@@ -1,109 +1,6 @@
-:root {
-  --cor-fundo: #D3CFE3;
-  --cor-botao: #7A64C8;
-  --cor-botao-hover: #5a4db8;
-  --cor-destaque: #7A64C8;
-  --cor-texto: #1a1a1a;
-  --cor-texto-secundario: #555555;
-  --cor-cartao: #FFFFFF;
-}
+@import url('./style.css');
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: 'Poppins', sans-serif;
-}
-
-body {
-  background-color: var(--cor-fundo);
-  padding: 16px;
-  color: var(--cor-texto);
-}
-
-header, footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px;
-  color: var(--cor-texto);
-}
-
-header {
-  background-color: var(--cor-botao);
-  border-radius: 12px;
-  margin-bottom: 16px;
-}
-
-footer {
-  background-color: var(--cor-botao);
-  border-radius: 12px;
-  margin-top: 16px;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  text-align: center;
-  padding: 10px;
-}
-
-footer .footer-text {
-  font-size: 14px;
-  color: var(--cor-texto);
-}
-
-.botao {
-  background-color: var(--cor-botao);
-  color: var(--cor-cartao);
-  border: none;
-  border-radius: 12px;
-  padding: 12px 20px;
-  font-weight: bold;
-  margin: 10px 0;
-  width: 100%;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.botao:hover {
-  background-color: var(--cor-botao-hover);
-}
-
-.input {
-  background-color: var(--cor-cartao);
-  border: 2px solid var(--cor-botao);
-  border-radius: 10px;
-  padding: 10px;
-  margin-bottom: 12px;
-  width: 100%;
-  color: var(--cor-texto);
-  font-size: 16px;
-}
-
-.input::placeholder {
-  color: var(--cor-texto-secundario);
-}
-
-.cartao {
-  background-color: var(--cor-cartao);
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  padding: 16px;
-  margin-bottom: 16px;
-}
-
-.titulo {
-  font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 12px;
-  color: var(--cor-texto);
-}
-
-.descricao {
-  font-size: 14px;
-  color: var(--cor-texto-secundario);
-}
-
+/* Específicos da página home */
 .map-container {
   width: 100%;
   max-width: none;
@@ -114,7 +11,7 @@ footer .footer-text {
   cursor: pointer;
 }
 
-/* Modal */
+/* Modal para mapa em tela cheia */
 .modal {
   display: none;
   position: fixed;
@@ -125,7 +22,6 @@ footer .footer-text {
   height: 100%;
   background-color: rgba(0,0,0,0.8);
 }
-
 #fullMap {
   position: absolute;
   top: 5%;
@@ -134,7 +30,6 @@ footer .footer-text {
   height: 90%;
   border-radius: 10px;
 }
-
 .close {
   position: absolute;
   top: 20px;
@@ -144,6 +39,7 @@ footer .footer-text {
   cursor: pointer;
 }
 
+/* Navbar customizada */
 .navbar {
   display: flex;
   justify-content: center;
