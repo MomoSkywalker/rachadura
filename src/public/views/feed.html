@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feed de Denúncias - BH</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <header>
+        <a href="/views/home_page.html"><img src="../assets/imgs/home-icon.png" alt="home" class="icone"></a>
+        <h1 class="titulo-header" id="header-title">Radar Urbano</h1> 
+        <a href="/views/perfil.html"><img src="../assets/imgs/perfil-icon.png" alt="perfil" class="icone"></a>
+  </header>
+  <div class="container">
+    <h1>Denúncias de Infraestrutura - Belo Horizonte</h1>
+    <div id="feed" class="feed"></div>
+  </div>
+  <script>
+    fetch('https://rachadura.onrender.com/api/denuncias')
+      .then(response => response.json())
+      .then(data => {
+        const feed = document.getElementById('feed');
+        data.feed.forEach(item => {
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.innerHTML = `
+            <div class="perfil">
+              <img src="${item.foto_perfil}" alt="Perfil de ${item.usuario}" class="foto-perfil">
+              <span class="usuario">${item.usuario}</span>
+            </div>
+            <img src="${item.imagem_denuncia}" alt="Denúncia" class="imagem-denuncia">
+            <div class="descricao">${item.descricao}</div>
+            <div class="localizacao">${item.localizacao}</div>
+          `;
+          feed.appendChild(card);
+        });
+      });
+  </script>
+  <footer class="footer">
+    <a href="/views/faq.html" class="footer-button">Perguntas Frequentes</a>
+  </footer>
+</body>
+</html> 
