@@ -8,13 +8,10 @@ createApp({
         logradouro: "",
         estado: "",
         cidade: "",
-        bairro: "",
-        siafi: "",
-        ibge: "",
-        ddd: "",
-        gia: ""
+        bairro: ""
       },
       enderecoBloqueado: false,
+      imagensBase64: []
     };
   },
 
@@ -28,10 +25,6 @@ createApp({
           this.endereco.bairro = bean.bairro;
           this.endereco.estado = bean.uf;
           this.endereco.cidade = bean.localidade;
-          this.endereco.siafi = bean.siafi;
-          this.endereco.ddd = bean.ddd;
-          this.endereco.ibge = bean.ibge;
-          this.endereco.gia = bean.gia;
           this.enderecoBloqueado = true;
         })
         .catch(() => {
@@ -39,23 +32,46 @@ createApp({
         });
     },
 
-    enviarFormulario(event) {
+    async filesToBase64(files) {
+      // Converte cada arquivo em Base64 (promessa)
+      return Promise.all(Array.from(files).map(file => {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = e => resolve(e.target.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+      }));
+    },
+
+    async enviarFormulario(event) {
       event.preventDefault();
 
       const usuarioId = localStorage.getItem("usuarioId") || "anonimo";
       const titulo = document.getElementById("denuncia-titulo-input").value;
       const categoria = document.querySelector("select[name='categoria']").value;
       const descricao = document.getElementById("update-description").value;
-      const midias = Array.from(document.getElementById("midia").files).map(f => f.name);
+      const files = document.getElementById("midia").files;
+
+      // Converte os arquivos em base64:
+      const midias = await this.filesToBase64(files);
+
+      // Cria a timeline inicial
+      const timeline = [{
+        status: "Denúncia Criada",
+        timestamp: new Date().toISOString(),
+        notas: "Denúncia registrada pelo usuário."
+      }];
 
       const dados = {
         usuarioId,
         titulo,
         categoria,
         descricao,
-        midias,
+        midias,         // Array de strings base64
         endereco: this.endereco,
-        dataRegistro: new Date().toISOString()
+        dataRegistro: new Date().toISOString(),
+        timeline
       };
 
       axios.post("https://rachadura.onrender.com/api/denuncias", dados)
@@ -74,8 +90,7 @@ createApp({
       const usuarioId = localStorage.getItem("usuarioId");
 
       if (!usuarioId) {
-        document.getElementById("tabela-denuncias").innerHTML =
-          "";
+        document.getElementById("tabela-denuncias").innerHTML = "";
         return;
       }
 
@@ -87,13 +102,13 @@ createApp({
             .slice(0, 5);
 
           if (denuncias.length === 0) {
-            document.getElementById("tabela-denuncias").innerHTML ="";
+            document.getElementById("tabela-denuncias").innerHTML = "";
             return;
           }
 
           let html = `
             <div class="tabela-container">
-              <h2 class="titulo-tabela" >Denúncias Enviadas</h2>
+              <h2 class="titulo-tabela">Denúncias Enviadas</h2>
               <table class="tabela-denuncias">
                 <thead>
                   <tr>
@@ -144,22 +159,15 @@ createApp({
 
     if (botaoCancelar) {
       botaoCancelar.addEventListener("click", (event) => {
-        event.preventDefault(); // Impede qualquer recarregamento
-        form.reset(); // Limpa os inputs do formulário
-
-        // Se quiser limpar também os campos Vue (endereço), faça:
+        event.preventDefault();
+        form.reset();
         this.endereco = {
           cep: "",
           logradouro: "",
           estado: "",
           cidade: "",
-          bairro: "",
-          siafi: "",
-          ibge: "",
-          ddd: "",
-          gia: ""
+          bairro: ""
         };
-
         this.enderecoBloqueado = false;
         window.location.href = "/views/home_page.html";
       });
