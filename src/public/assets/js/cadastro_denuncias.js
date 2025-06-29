@@ -39,11 +39,6 @@ createApp({
           this.endereco.estado = bean.uf;
           this.endereco.cidade = bean.localidade;
           this.enderecoBloqueado = true;
-
-          // ---> NOVO <---
-          // Após preencher o endereço, tenta geocodificar automaticamente
-          // Damos um pequeno tempo para o usuário digitar o número
-          setTimeout(() => this.geocodificarEndereco(), 500);
         })
         .catch(() => {
           alert("Erro ao buscar o CEP. Verifique se está correto.");
