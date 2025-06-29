@@ -533,6 +533,15 @@ select, option {
    border-radius: 8px;
 }
 
+.imagem-principal-denuncia {
+    width: 100%; 
+    max-width: 100%;
+    height: auto; 
+    margin: 10px 0; 
+    border-radius: 10px; 
+    display: block; 
+}
+
 @media (max-width: 600px) {
   .filtro-categoria-card {
     max-width: 100%;

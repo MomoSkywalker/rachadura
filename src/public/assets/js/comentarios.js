@@ -2,7 +2,7 @@
 const API = "https://rachadura.onrender.com/api";
 const params = new URLSearchParams(window.location.search);
 const denunciaId = params.get('id');
-const usuarioId = localStorage.getItem("usuarioId"); 
+const usuarioId = localStorage.getItem("usuarioId");
 
 
 
@@ -19,8 +19,8 @@ function renderDenuncia(denuncia, usuariosMap) {
     const dislikes = denuncia.dislikes || [];
     const jaCurtiu = usuarioId && likes.includes(usuarioId);
     const jaDescurtiu = usuarioId && dislikes.includes(usuarioId);
-    
-    const midiaPrincipalHtml = `<img src="${obterImagemPrincipal(denuncia)}" style="max-width:420px;margin:10px 0;border-radius:10px;">`;
+
+    const midiaPrincipalHtml = `<img src="${obterImagemPrincipal(denuncia)}" class="imagem-principal-denuncia" alt="Imagem da Denúncia">`;
 
 
     const acoesLikeHtml = usuarioId ? `
@@ -28,7 +28,7 @@ function renderDenuncia(denuncia, usuariosMap) {
         <button class="dislike-btn${jaDescurtiu ? ' ativo' : ''}" id="dislikeBtn" title="Não curtir"><i class="bi bi-hand-thumbs-down-fill"></i><span>${dislikes.length}</span></button>
     ` : `<p class="text-muted small">Faça login para avaliar esta denúncia.</p>`;
 
- 
+
     const acoesAdminHtml = usuarioId === denuncia.usuarioId ? `
         <button class="btn btn-primary btn-sm me-2" id="editBtn">Adicionar Atualização</button>
         <button class="btn btn-outline-secondary btn-sm" id="deleteBtn">Excluir</button>
@@ -53,7 +53,7 @@ function renderDenuncia(denuncia, usuariosMap) {
         </div>
       </div>`;
 
-   
+
     if (usuarioId) {
         document.getElementById("likeBtn")?.addEventListener('click', () => votarLikeDislike(true));
         document.getElementById("dislikeBtn")?.addEventListener('click', () => votarLikeDislike(false));
@@ -65,14 +65,14 @@ function renderDenuncia(denuncia, usuariosMap) {
 }
 
 function renderTimeline(denuncia) {
-  
+
     const timelineContainer = document.getElementById("timelineContainer");
     if (!denuncia.timeline || !denuncia.timeline.length) {
         timelineContainer.innerHTML = "<p>Sem eventos registrados nesta denúncia.</p>";
         return;
     }
     let html = `<h3>Histórico (Timeline)</h3><div class="timeline">`;
-    const timelineOrdenada = [...denuncia.timeline].sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+    const timelineOrdenada = [...denuncia.timeline].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
     timelineOrdenada.forEach(ev => {
         let midiasHtml = "";
         if (ev.midias && ev.midias.length > 0) {
@@ -124,7 +124,7 @@ async function votarLikeDislike(like) {
     if (!verificarLoginERedirecionar("Você precisa estar logado para avaliar.")) {
         return;
     }
- 
+
     const res = await fetch(`${API}/denuncias/${denunciaId}`);
     const denuncia = await res.json();
     let likes = denuncia.likes || [];
@@ -189,13 +189,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         renderDenuncia(denuncia, usuariosMap);
         renderTimeline(denuncia);
         renderComentarios(comentarios, usuariosMap);
-        
+
         const formComentario = document.getElementById("formComentario");
         formComentario.addEventListener('submit', e => {
             e.preventDefault();
             enviarComentario();
         });
-        
+
         // Mostra o formulário de comentário apenas se o usuário estiver logado.
         if (usuarioId) {
             formComentario.style.display = "flex";
