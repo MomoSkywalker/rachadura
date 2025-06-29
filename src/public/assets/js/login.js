@@ -1,16 +1,16 @@
-// Usamos a sintaxe do jQuery $(document).ready() que é equivalente ao DOMContentLoaded
-$(document).ready(function() {
+document.addEventListener('DOMContentLoaded', () => {
 
     const API_URL = "https://rachadura.onrender.com/api/usuarios";
     let db_usuarios = [];
 
-    // ---> NOVO: INICIALIZAÇÃO DAS MÁSCARAS COM JQUERY <---
-    // A sintaxe é muito mais limpa. O jQuery encontra o elemento pelo ID e o plugin aplica a máscara.
-    $('#reg-cpf').mask('000.000.000-00');
-    $('#reg-cep').mask('00.000-000');
+    // --- INICIALIZAÇÃO DAS MÁSCARAS (IMask.js) ---
+    const cpfInput = document.getElementById('reg-cpf');
+    const cepInput = document.getElementById('reg-cep');
 
+    const cpfMask = IMask(cpfInput, { mask: '000.000.000-00' });
+    const cepMask = IMask(cepInput, { mask: '00.000-000' });
 
-    // --- LÓGICA DE ENDEREÇO COM VUE.JS (permanece a mesma) ---
+    // --- LÓGICA DE ENDEREÇO COM VUE.JS ---
     const appEndereco = Vue.createApp({
         data() {
             return {
@@ -20,8 +20,8 @@ $(document).ready(function() {
         },
         methods: {
             async buscarCep() {
-                // O v-model do Vue ainda funciona com a máscara do jQuery.
-                const cepLimpo = this.cep.replace(/\D/g, ''); 
+                // Pega o valor sem máscara para fazer a busca na API
+                const cepLimpo = this.cep.replace(/\D/g, '');
                 if (cepLimpo.length === 8) {
                     try {
                         const response = await axios.get(`https://viacep.com.br/ws/${cepLimpo}/json/`);
@@ -33,7 +33,9 @@ $(document).ready(function() {
                         } else {
                             alert("CEP não encontrado.");
                         }
-                    } catch (error) { console.error("Erro ao buscar CEP:", error); }
+                    } catch (error) {
+                        console.error("Erro ao buscar CEP:", error);
+                    }
                 }
             },
             getEnderecoCompleto() {
@@ -45,58 +47,100 @@ $(document).ready(function() {
         }
     }).mount('#vue-endereco-app');
 
+    // --- FUNÇÕES AUXILIARES ---
+    const fileToBase64 = file => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
 
-    // --- FUNÇÕES DE LÓGICA (sem alterações) ---
-    const fileToBase64 = file => new Promise((resolve, reject) => { /* ... */ });
     const generateUserId = () => "user_" + Math.floor(Math.random() * 90000 + 10000);
-    const isMaiorDeIdade = (dataNascimento) => { /* ... */ };
 
+    const isMaiorDeIdade = (dataNascimento) => {
+        const hoje = new Date();
+        const nascimento = new Date(dataNascimento);
+        let idade = hoje.getFullYear() - nascimento.getFullYear();
+        const m = hoje.getMonth() - nascimento.getMonth();
+        if (m < 0 || (m === 0 && hoje.getDate() <= nascimento.getDate())) {
+            idade--;
+        }
+        return idade >= 18;
+    };
 
     // --- LÓGICA PRINCIPAL ---
-    async function carregarUsuarios() { /* ... */ }
-    function loginUser(login, senha) { /* ... */ }
-    async function addUser(novoUsuario) { /* ... */ }
+    async function carregarUsuarios() {
+        try {
+            const response = await axios.get(API_URL);
+            db_usuarios = response.data;
+        } catch (error) {
+            console.error('Erro ao carregar usuários:', error);
+        }
+    }
+    
+    function loginUser(login, senha) {
+        const user = db_usuarios.find(u => u.usuario === login && u.senha === senha);
+        if (user) {
+            sessionStorage.setItem('usuarioCorrente', JSON.stringify(user));
+            localStorage.setItem('usuarioId', user.id);
+            return true;
+        }
+        return false;
+    }
 
+    async function addUser(novoUsuario) {
+        try {
+            const response = await axios.post(API_URL, novoUsuario);
+            db_usuarios.push(response.data);
+            alert("Usuário criado com sucesso!");
+            return true;
+        } catch (error) {
+            console.error("Erro ao criar usuário:", error);
+            alert("Erro ao criar usuário. O nome de usuário ou CPF pode já estar em uso.");
+            return false;
+        }
+    }
 
-    // --- EVENT LISTENERS COM JQUERY ---
-    $('#login-form').on('submit', (e) => {
+    // --- EVENT LISTENERS ---
+    const formLogin = document.getElementById('login-form');
+    formLogin.addEventListener('submit', (e) => {
         e.preventDefault();
-        if (loginUser($('#username').val(), $('#password').val())) {
+        if (loginUser(document.getElementById('username').value, document.getElementById('password').value)) {
             window.location.href = 'home_page.html';
         } else {
             alert('Usuário ou senha incorretos.');
         }
     });
 
-    $('#btn-salvar-usuario').on('click', async () => {
-        // Pega o valor sem máscara usando o próprio plugin
-        const cpf = $('#reg-cpf').cleanVal(); 
-        const dataNascimento = $('#reg-nascimento').val();
+    const btnSalvar = document.getElementById('btn-salvar-usuario');
+    btnSalvar.addEventListener('click', async () => {
+        const cpf = cpfMask.unmaskedValue; // Pega o valor sem máscara
+        const dataNascimento = document.getElementById('reg-nascimento').value;
 
         if (!isMaiorDeIdade(dataNascimento)) {
             alert("É necessário ser maior de 18 anos para se cadastrar.");
             return;
         }
-        
-        const senha = $('#reg-senha').val();
-        const senha2 = $('#reg-senha2').val();
+        // ... outras validações ...
+        const senha = document.getElementById('reg-senha').value;
+        const senha2 = document.getElementById('reg-senha2').value;
         if (senha !== senha2) {
             alert("As senhas não conferem.");
             return;
         }
 
-        let fotoBase64 = "https://i.pravatar.cc/150";
-        const fotoFile = $('#reg-foto')[0].files[0];
+        let fotoBase64 = "https://i.pravatar.cc/150"; // Imagem padrão
+        const fotoFile = document.getElementById('reg-foto').files[0];
         if (fotoFile) {
             fotoBase64 = await fileToBase64(fotoFile);
         }
 
         const novoUsuario = {
             id: generateUserId(),
-            nome: $('#reg-nome').val().trim(),
-            usuario: $('#reg-usuario').val().trim(),
+            nome: document.getElementById('reg-nome').value.trim(),
+            usuario: document.getElementById('reg-usuario').value.trim(),
             senha: senha,
-            email: $('#reg-email').val().trim(),
+            email: document.getElementById('reg-email').value.trim(),
             cpf: cpf,
             data_nascimento: dataNascimento,
             foto_perfil: fotoBase64,
@@ -107,19 +151,12 @@ $(document).ready(function() {
         };
         
         if (await addUser(novoUsuario)) {
-            // Usando jQuery para encontrar o modal e o Bootstrap para escondê-lo
-            var registerModal = new bootstrap.Modal($('#registerModal')[0]);
+            const registerModal = bootstrap.Modal.getInstance(document.getElementById('registerModal'));
             registerModal.hide();
-            $('#register-form')[0].reset();
+            document.getElementById('register-form').reset();
             appEndereco.cep = ''; // Limpa o CEP no Vue
         }
     });
 
     carregarUsuarios();
-
-    // Funções de lógica que podem ser coladas aqui (sem alterações da versão anterior)
-    function loginUser(login, senha) { const user = db_usuarios.find(u => u.usuario === login && u.senha === senha); if (user) { sessionStorage.setItem('usuarioCorrente', JSON.stringify(user)); localStorage.setItem('usuarioId', user.id); return true; } return false; }
-    async function addUser(novoUsuario) { try { const response = await axios.post(API_URL, novoUsuario); db_usuarios.push(response.data); alert("Usuário criado com sucesso!"); return true; } catch (error) { alert("Erro ao criar usuário."); return false; } }
-    async function carregarUsuarios() { try { const response = await axios.get(API_URL); db_usuarios = response.data; } catch (error) { console.error('Erro ao carregar usuários:', error); } }
-    function isMaiorDeIdade(dataNascimento) { const hoje = new Date(); const nascimento = new Date(dataNascimento); let idade = hoje.getFullYear() - nascimento.getFullYear(); const m = hoje.getMonth() - nascimento.getMonth(); if (m < 0 || (m === 0 && hoje.getDate() <= nascimento.getDate())) { idade--; } return idade >= 18; }
 });
