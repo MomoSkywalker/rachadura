@@ -1,3 +1,7 @@
+// ---> AVISO IMPORTANTE DE SEGURANÇA <---
+// Sua chave de API está exposta aqui. Em um projeto real, isso é muito perigoso.
+// O ideal é que as chamadas para a API do YouTube sejam feitas a partir do seu backend (servidor),
+// onde a chave pode ser guardada em segurança. Por ora, para o projeto funcionar, manteremos assim.
 const apiKey = 'AIzaSyClCYPKTgtXacIp3aB7rDrcldR62Ht8JCs';
 
 const palavrasChave = [
@@ -15,23 +19,17 @@ let videoIds = [];
 let player;
 let currentIndex = 0;
 
-// Função para resetar variáveis e player
-function resetVideos() {
-  videoIds = [];
-  currentIndex = 0;
-  // Limpa o player se ele já existe
-  const playerDiv = document.getElementById('player');
-  if (playerDiv) playerDiv.innerHTML = "";
-  player = null;
+// Função chamada automaticamente pela API do YouTube quando o script dela termina de carregar
+function onYouTubeIframeAPIReady() {
+  buscarVideosMultiplasPalavras();
 }
 
 async function buscarVideosMultiplasPalavras() {
-  resetVideos();
-
-  const publishedAfter = '2025-04-01T00:00:00Z';
+  videoIds = []; // Limpa a lista para novas buscas
+  const publishedAfter = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(); // Busca vídeos do último mês
 
   for (let palavra of palavrasChave) {
-    const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=3&q=${encodeURIComponent(palavra)}&regionCode=BR&relevanceLanguage=pt&publishedAfter=${publishedAfter}&order=date&key=${apiKey}`;
+    const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=2&q=${encodeURIComponent(palavra)}&regionCode=BR&relevanceLanguage=pt&publishedAfter=${publishedAfter}&order=relevance&key=${apiKey}`;
 
     try {
       const res = await fetch(url);
@@ -43,47 +41,45 @@ async function buscarVideosMultiplasPalavras() {
     }
   }
 
-  // Remove IDs duplicados
+  // Remove IDs duplicados para não repetir vídeos
   videoIds = [...new Set(videoIds)];
+  console.log(`Encontrados ${videoIds.length} vídeos.`);
 
   if (videoIds.length > 0) {
     iniciarPlayer();
   } else {
-    console.error("Nenhum vídeo encontrado.");
+    document.getElementById('player').innerHTML = '<p style="text-align:center;">Nenhum vídeo recente encontrado para os temas.</p>';
+    console.error("Nenhum vídeo encontrado para iniciar o player.");
   }
 }
 
-// Função chamada pela API do YouTube
-window.onYouTubeIframeAPIReady = function () {
-  buscarVideosMultiplasPalavras();
-}
-
-// Inicia o player com o primeiro vídeo
 function iniciarPlayer() {
+  if (player) {
+    // Se o player já existe, apenas carrega a nova lista de vídeos
+    player.loadPlaylist(videoIds);
+    return;
+  }
+  
+  // Cria um novo player
   player = new YT.Player('player', {
-    height: '390',
-    width: '640',
+    // A altura e a largura agora são controladas pelo CSS para melhor responsividade
     videoId: videoIds[currentIndex],
     playerVars: {
-      autoplay: 1,
-      mute: 1,
-      controls: 0,
-      modestbranding: 1,
-      showinfo: 0,
-      rel: 0
+      'autoplay': 1,
+      'mute': 1, // Autoplay geralmente requer que o vídeo comece mudo
+      'controls': 1, // Habilitar controles para o usuário
+      'rel': 0, // Não mostrar vídeos relacionados no final
+      'playlist': videoIds.join(','), // Carrega todos os vídeos na playlist
+      'loop': 1, // Faz a playlist repetir
+      'modestbranding': 1
     },
     events: {
-      onReady: onPlayerReady
+      'onReady': onPlayerReady
     }
   });
 }
 
 function onPlayerReady(event) {
-  event.target.playVideo();
-
-  setInterval(() => {
-    if (videoIds.length === 0) return;
-    currentIndex = (currentIndex + 1) % videoIds.length;
-    player.loadVideoById(videoIds[currentIndex]);
-  }, 10000);
+  // O vídeo já começa a tocar por causa do autoplay=1
+  console.log("Player pronto e tocando.");
 }

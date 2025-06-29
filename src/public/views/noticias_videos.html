@@ -1,32 +1,41 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
   <meta charset="UTF-8" />
-  <title>Portal de Notícias</title>
-  <link rel="stylesheet" href="../assets/css/style.css" />
+  <title>Radar Urbano - Vídeos</title>
+  <link rel="stylesheet" href="../assets/css/style.css" /> 
+  <style>
+    /* Estilo básico para garantir que o player se ajuste bem */
+    .player-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      padding: 20px;
+    }
+    #player {
+      max-width: 854px; /* Largura padrão de vídeo 16:9 */
+      width: 100%;
+      aspect-ratio: 16 / 9; /* Mantém a proporção correta */
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      border-radius: 12px;
+    }
+  </style>
 </head>
-
 <body>
   <header>
-    <a href="/views/home_page.html"><img src="../assets/imgs/home-icon.png" alt="home" class="icone"></a>
-    <h1 class="titulo-header" id="header-title">Radar Urbano</h1>
-    <a href="/views/perfil.html"><img src="../assets/imgs/perfil-icon.png" alt="perfil" class="icone"></a>
+    <h1 class="titulo-header">Vídeos da Comunidade</h1>
   </header>
+
   <main>
-    <div class="cartao">
-      <p class="titulo-cartao" id="cartao-title">Últimas Notícias</p>
-      <div class="form-group">
-        <div id="player-container" class="container-noticias-videos">
-        <div id="player"></div>
-      </div>
+    <div class="player-container">
+      <div id="player"></div>
     </div>
   </main>
-  <script src="https://www.youtube.com/iframe_api"></script>
+  
   <script src="../assets/js/noticias_videos.js"></script>
-  <footer class="footer">
-    <a href="/views/faq.html" class="footer-button">Perguntas Frequentes</a>
-  </footer>
-</body>
 
+  <script src="https://www.youtube.com/iframe_api"></script>
+
+</body>
 </html>
