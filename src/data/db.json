@@ -268,6 +268,65 @@
       "timeline": []
     }
   ],
+  "comentarios": [
+  {
+    "id": "coment_1",
+    "denunciaId": "1",
+    "usuarioId": "user_53421",
+    "texto": "Já vi esse buraco, perigoso mesmo!",
+    "data": "2025-06-29T14:32:00.000Z"
+  },
+  {
+    "id": "coment_2",
+    "denunciaId": "1",
+    "usuarioId": "user_45678",
+    "texto": "A prefeitura precisa agir logo.",
+    "data": "2025-06-29T15:05:00.000Z"
+  },
+  {
+    "id": "coment_3",
+    "denunciaId": "2",
+    "usuarioId": "user_63023",
+    "texto": "Semáforo parado demais! Ontem quase bati o carro.",
+    "data": "2025-06-29T15:30:00.000Z"
+  },
+  {
+    "id": "coment_4",
+    "denunciaId": "2",
+    "usuarioId": "user_54321",
+    "texto": "Essa situação está muito perigosa pra todo mundo.",
+    "data": "2025-06-29T15:38:00.000Z"
+  },
+  {
+    "id": "coment_5",
+    "denunciaId": "3",
+    "usuarioId": "user_67890",
+    "texto": "Esse vazamento já dura semanas, absurdo.",
+    "data": "2025-06-29T15:41:00.000Z"
+  },
+  {
+    "id": "coment_6",
+    "denunciaId": "4",
+    "usuarioId": "user_53421",
+    "texto": "Minha rua também está sem luz! Que horror.",
+    "data": "2025-06-29T16:05:00.000Z"
+  },
+  {
+    "id": "coment_7",
+    "denunciaId": "5",
+    "usuarioId": "user_12345",
+    "texto": "Motociclistas vivem caindo aí. Muito perigoso.",
+    "data": "2025-06-29T16:20:00.000Z"
+  },
+  {
+    "id": "coment_8",
+    "denunciaId": "6",
+    "usuarioId": "user_63023",
+    "texto": "Esses buracos aumentaram muito nos últimos dias.",
+    "data": "2025-06-29T16:42:00.000Z"
+  }
+],
+
   "noticias": [
     {
       "id": 1749428305178,

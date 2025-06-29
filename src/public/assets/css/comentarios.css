@@ -119,3 +119,55 @@
 }
 .botao-editar:hover { background: #e9e7fa; }
 .botao-excluir:hover { background: #ffe6e6; }
+
+.like-dislike-group {
+  display: flex;
+  gap: 16px;
+  margin-top: 12px;
+  align-items: center;
+}
+
+.like-btn,
+.dislike-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  border: none;
+  background: #f5f4fa;
+  border-radius: 10px;
+  font-weight: 600;
+  color: #7A64C8;
+  font-size: 1.13em;
+  transition: background 0.18s, color 0.18s;
+  cursor: pointer;
+}
+
+.like-btn i, .dislike-btn i {
+  font-size: 1.26em;
+  transition: color 0.2s;
+}
+
+.like-btn.ativo, .like-btn:hover {
+  background: #e5ffe9;
+  color: #68C157;
+}
+.like-btn.ativo i, .like-btn:hover i {
+  color: #68C157;
+}
+
+.dislike-btn.ativo, .dislike-btn:hover {
+  background: #fff1f1;
+  color: #E14D4D;
+}
+.dislike-btn.ativo i, .dislike-btn:hover i {
+  color: #E14D4D;
+}
+
+.like-btn span, .dislike-btn span {
+  font-weight: 500;
+  margin-left: 2px;
+  min-width: 18px;
+  display: inline-block;
+  text-align: center;
+}

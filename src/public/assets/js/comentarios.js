@@ -73,19 +73,25 @@ async function renderDenuncia() {
       <div class="mb-3">
         <span class="fw-semibold">Categoria:</span> ${denuncia.categoria || "-"}
       </div>
-      <div>
-        <button class="btn btn-outline-success btn-sm me-2 botao-curtir${jaCurtiu ? " ativo" : ""}" id="likeBtn">👍 <span>${likes.length}</span></button>
-        <button class="btn btn-outline-danger btn-sm me-2 botao-descurtir${jaDescurtiu ? " ativo" : ""}" id="dislikeBtn">👎 <span>${dislikes.length}</span></button>
-        ${
-          usuarioId === denuncia.usuarioId
-            ? `<button class="btn btn-primary btn-sm me-2" id="editBtn">Editar</button>
-               <button class="btn btn-outline-secondary btn-sm" id="deleteBtn">Excluir</button>`
-            : ""
-        }
-      </div>
+        <div class="like-dislike-group">
+  <button class="like-btn${jaCurtiu ? ' ativo' : ''}" id="likeBtn" title="Curtir">
+    <i class="bi bi-hand-thumbs-up-fill"></i>
+    <span>${likes.length}</span>
+  </button>
+  <button class="dislike-btn${jaDescurtiu ? ' ativo' : ''}" id="dislikeBtn" title="Não curtir">
+    <i class="bi bi-hand-thumbs-down-fill"></i>
+    <span>${dislikes.length}</span>
+  </button>
+  ${usuarioId === denuncia.usuarioId
+      ? `<button class="btn btn-primary btn-sm me-2" id="editBtn">Editar</button>
+         <button class="btn btn-outline-secondary btn-sm" id="deleteBtn">Excluir</button>`
+      : ""
+  }
+</div>
+
     </div>
   </div>
-`;
+  `;
   // Listeners dos botões
   if (usuarioId) {
     document.getElementById("likeBtn").onclick = async () => await votarLikeDislike(true);
@@ -96,6 +102,7 @@ async function renderDenuncia() {
     document.getElementById("editBtn").onclick = () => window.location.href = `/views/atualizar_denuncia.html?id=${denuncia.id}`;
   }
 }
+
 
 async function votarLikeDislike(like) {
   const denuncia = await getDenuncia();
