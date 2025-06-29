@@ -1,5 +1,5 @@
 
-const apiKey = 'AIzaSyClCYPKTgtXacIp3aB7rDrcldR62Ht8JCs';
+const apiKey = 'AIzaSyCXaSAFrF6bVb5s5eI2uQDTyE231PgkVbw';
 
 const palavrasChave = [
   "buracos na rua Belo Horizonte",
