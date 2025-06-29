@@ -3,12 +3,11 @@ let miniMarkers = [], fullMarkers = [];
 let denuncias = [];
 let marcadorUsuario = null;
 
-// Função para carregar denúncias do db.json
+// Função para carregar denúncias
 async function carregarDenuncias() {
   try {
     console.log("Carregando denúncias...");
     
-    // Caminho corrigido para https://rachadura.onrender.com/api/denuncias
     const response = await fetch('https://rachadura.onrender.com/api/denuncias');
     
     if (!response.ok) {
@@ -16,12 +15,13 @@ async function carregarDenuncias() {
     }
     
     const data = await response.json();
-    denuncias = data.denuncias || [];
+    
+    denuncias = data || [];
     
     console.log(`${denuncias.length} denúncias carregadas:`, denuncias);
     
     if (denuncias.length === 0) {
-      console.warn("Nenhuma denúncia encontrada no db.json");
+      console.warn("Nenhuma denúncia foi carregada da API.");
     }
     
     renderizarMarcadores();
@@ -58,24 +58,30 @@ function renderizarMarcadores() {
     };
 
     console.log(`Processando denúncia ${denuncia.id} em:`, position);
+    
+
+    const endereco = denuncia.endereco || {};
+    const imagemUrl = denuncia.midias && denuncia.midias.length > 0 ? denuncia.midias[0] : null;
 
     const content = `
       <div style="max-width: 200px;">
         <p><b>Descrição:</b> ${denuncia.descricao || 'Sem descrição'}</p>
         <p><b>Categoria:</b> ${denuncia.categoria || 'Não especificada'}</p>
-        <p><b>CEP:</b> ${denuncia.cep || 'Não informado'} - <b>Número:</b> ${denuncia.numero || 'N/A'}</p>
-        ${denuncia.imagem ? `<img src="${denuncia.imagem}" alt="Imagem da denúncia" style="width: 100%; margin-top: 5px;">` : ''}
+        <p><b>CEP:</b> ${endereco.cep || 'Não informado'} - <b>Bairro:</b> ${endereco.bairro || 'N/A'}</p>
+        ${imagemUrl ? `<img src="${imagemUrl}" alt="Imagem da denúncia" style="width: 100%; margin-top: 5px;">` : ''}
       </div>
     `;
 
     const infoWindow = new google.maps.InfoWindow({ content });
+    
+    const markerTitle = denuncia.titulo || `Denúncia #${denuncia.id}`;
 
     // Marcador no mapa mini
     if (visivel) {
       const markerMini = new google.maps.Marker({
         position,
         map: miniMap,
-        title: `Denúncia #${denuncia.id + 1}`,
+        title: markerTitle,
       });
       markerMini.addListener("click", () => {
         infoWindow.open(miniMap, markerMini);
@@ -87,7 +93,7 @@ function renderizarMarcadores() {
     const markerFull = new google.maps.Marker({
       position,
       map: visivel ? fullMap : null,
-      title: `Denúncia #${denuncia.id + 1}`,
+      title: markerTitle,
     });
     markerFull.addListener("click", () => {
       infoWindow.open(fullMap, markerFull);
@@ -102,7 +108,7 @@ function renderizarMarcadores() {
 window.initMaps = function(){
   console.log("Inicializando mapas...");
   
-  // Coordenadas padrão (ex: Centro de Belo Horizonte)
+  // Coordenadas padrão (Centro de Belo Horizonte)
   const defaultCoords = { lat: -19.9167, lng: -43.9345 };
 
   // Verifica se os elementos do mapa existem
@@ -132,7 +138,6 @@ window.initMaps = function(){
   document.getElementById("miniMap").addEventListener("click", () => {
     console.log("Abrindo mapa em tela cheia...");
     modal.style.display = "block";
-    // Atualiza o centro quando abre o modal
     fullMap.setCenter(miniMap.getCenter());
   });
 
@@ -166,4 +171,4 @@ window.initMaps = function(){
 }
 
 // Debug: Verifica se o script foi carregado
-console.log("app.js carregado com sucesso!");
+console.log("home_page.js carregado com sucesso!");
