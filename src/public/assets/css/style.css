@@ -481,32 +481,56 @@ select, option {
 }
 
 
-    .player-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      padding: 20px;
-    }
+.player-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+}
 
-    #player {
-      max-width: 854px;
-      /* Largura padrão de vídeo 16:9 */
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      /* Mantém a proporção correta */
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-      border-radius: 12px;
-    }
+#player {
+
+  width: 80%; 
+  max-width: 854px; 
+  
+  
+  aspect-ratio: 16 / 9; 
+  
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+}
+
+#player iframe {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px; 
+}
+
+.comentarios img {
+   max-width: 100%; 
+   height: auto;    
+   display: block;   
+   margin-bottom: 10px; 
+   border-radius: 8px; 
+}
 
 
-@media (max-width: 700px) {
-  #player {
-    width: 100vw;
-    height: 56vw; /* Proporção 16:9 */
-    min-height: 200px;
-    max-width: 100vw;
-  }
+.comentario-conteudo img {
+   max-width: 100%;
+   height: auto;
+   display: block;
+   margin-bottom: 10px;
+   border-radius: 8px;
+}
+
+
+.cartao-comentario img {
+   max-width: 100%;
+   height: auto;
+   display: block;
+   margin-bottom: 10px;
+   border-radius: 8px;
 }
 
 @media (max-width: 600px) {
@@ -517,7 +541,20 @@ select, option {
   }
 }
 
+@media (max-width: 768px) {
+    .titulo-header {
+        font-size: 18px; /* Diminui o tamanho do título em telas menores */
+    }
 
+    header {
+        padding: 12px; /* Reduz o preenchimento interno do header */
+    }
+
+    .icone {
+        width: 24px; /* Garante que os ícones tenham um tamanho consistente */
+        height: 24px;
+    }
+}
 
 /* Responsividade simples para os botões de ação */
 @media (max-width: 480px) {
