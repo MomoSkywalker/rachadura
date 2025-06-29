@@ -481,29 +481,23 @@ select, option {
 }
 
 
-/* Centraliza o player e ajusta responsividade */
-.container-noticias-videos {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  min-height: 420px; /* ou ajuste conforme desejar */
-  margin: 0 auto;
-}
+    .player-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      padding: 20px;
+    }
 
-#player {
-  display: block;
-  margin: 0 auto;
-  /* Responsivo */
-  max-width: 100vw;
-  max-height: 60vw;
-  /* Largura máxima para desktop */
-  width: 640px;
-  height: 390px;
-  box-shadow: 0 2px 16px rgba(34,34,68,0.09);
-  border-radius: 14px;
-  background: #111;
-}
+    #player {
+      max-width: 854px;
+      /* Largura padrão de vídeo 16:9 */
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      /* Mantém a proporção correta */
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      border-radius: 12px;
+    }
 
 
 @media (max-width: 700px) {

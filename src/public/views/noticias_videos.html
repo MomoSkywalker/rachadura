@@ -1,41 +1,28 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8" />
   <title>Radar Urbano - Vídeos</title>
-  <link rel="stylesheet" href="../assets/css/style.css" /> 
-  <style>
-    /* Estilo básico para garantir que o player se ajuste bem */
-    .player-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      padding: 20px;
-    }
-    #player {
-      max-width: 854px; /* Largura padrão de vídeo 16:9 */
-      width: 100%;
-      aspect-ratio: 16 / 9; /* Mantém a proporção correta */
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-      border-radius: 12px;
-    }
-  </style>
+  <link rel="stylesheet" href="../assets/css/style.css" />
 </head>
+
 <body>
   <header>
-    <h1 class="titulo-header">Vídeos da Comunidade</h1>
+    <img src="../assets/imgs/perfil-icon.png" alt="Perfil" class="icone">
+    <h1 class="titulo-header">Radar Urbano</h1>
+    <img src="../assets/imgs/menu-icon.png" alt="Menu" class="icone">
   </header>
-
   <main>
     <div class="player-container">
       <div id="player"></div>
     </div>
   </main>
-  
+
   <script src="../assets/js/noticias_videos.js"></script>
 
   <script src="https://www.youtube.com/iframe_api"></script>
 
 </body>
+
 </html>

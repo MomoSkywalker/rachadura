@@ -1,7 +1,4 @@
-// ---> AVISO IMPORTANTE DE SEGURANÇA <---
-// Sua chave de API está exposta aqui. Em um projeto real, isso é muito perigoso.
-// O ideal é que as chamadas para a API do YouTube sejam feitas a partir do seu backend (servidor),
-// onde a chave pode ser guardada em segurança. Por ora, para o projeto funcionar, manteremos assim.
+
 const apiKey = 'AIzaSyClCYPKTgtXacIp3aB7rDrcldR62Ht8JCs';
 
 const palavrasChave = [
@@ -41,7 +38,7 @@ async function buscarVideosMultiplasPalavras() {
     }
   }
 
-  // Remove IDs duplicados para não repetir vídeos
+
   videoIds = [...new Set(videoIds)];
   console.log(`Encontrados ${videoIds.length} vídeos.`);
 
@@ -62,15 +59,15 @@ function iniciarPlayer() {
   
   // Cria um novo player
   player = new YT.Player('player', {
-    // A altura e a largura agora são controladas pelo CSS para melhor responsividade
+  
     videoId: videoIds[currentIndex],
     playerVars: {
       'autoplay': 1,
-      'mute': 1, // Autoplay geralmente requer que o vídeo comece mudo
-      'controls': 1, // Habilitar controles para o usuário
-      'rel': 0, // Não mostrar vídeos relacionados no final
-      'playlist': videoIds.join(','), // Carrega todos os vídeos na playlist
-      'loop': 1, // Faz a playlist repetir
+      'mute': 1, 
+      'controls': 1, 
+      'rel': 0, 
+      'playlist': videoIds.join(','), 
+      'loop': 1,
       'modestbranding': 1
     },
     events: {
@@ -80,6 +77,5 @@ function iniciarPlayer() {
 }
 
 function onPlayerReady(event) {
-  // O vídeo já começa a tocar por causa do autoplay=1
   console.log("Player pronto e tocando.");
 }
