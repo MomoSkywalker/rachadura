@@ -1,14 +1,13 @@
-/* style.css */
+@import url('style.css');
 
-/* --- Variáveis CSS para Cores e Dimensões --- */
 :root {
     /* Cores */
-    --color-primary-bg: #D3CFE3;        /* Fundo geral da página */
-    --color-secondary-bg: #B3A5D8;      /* Fundo de cabeçalho, rodapé, botões */
-    --color-accent: #7A64C8;            /* Cor de destaque principal (interatividade) */
-    --color-text-dark: #000000;         /* Texto principal escuro */
-    --color-text-light: #FFFFFF;        /* Texto em elementos escuros (ex: hover de botão) */
-    --color-text-muted: #4B4B4B;        /* Texto secundário, descrições */
+    --color-primary-bg: #D3CFE3;        
+    --color-secondary-bg: #B3A5D8;     
+    --color-accent: #7A64C8;           
+    --color-text-dark: #000000;         
+    --color-text-light: #FFFFFF;       
+    --color-text-muted: #4B4B4B;        
     --color-card-bg: #FFFFFF;           /* Fundo de cartões */
     --color-border-light: rgba(0, 0, 0, 0.1); /* Borda suave */
     --color-shadow-light: rgba(0, 0, 0, 0.08); /* Sombra leve */
