@@ -147,7 +147,7 @@
       ],
       "endereco": {
         "cep": "30190100",
-        "logradouro": "Rua dos Goitacazes, Centro",
+        "logradouro": "Rua dos Goitacazes",
         "estado": "MG",
         "cidade": "Belo Horizonte",
         "bairro": "Centro"
@@ -166,35 +166,13 @@
       ],
       "endereco": {
         "cep": "",
-        "logradouro": "Avenida Afonso Pena, esquina com Rua da Bahia",
+        "logradouro": "Avenida Afonso Pena",
         "estado": "MG",
         "cidade": "Belo Horizonte",
         "bairro": "Centro"
       },
       "dataRegistro": "2025-06-10T10:00:00.000Z",
       "timeline": []
-    },
-    {
-      "id": "72b2",
-      "usuarioId": "user_63023",
-      "titulo": "exemplo",
-      "categoria": "buraco",
-      "descricao": "exemplo",
-      "midias": [
-        "banana.png"
-      ],
-      "endereco": {
-        "cep": "30850650",
-        "logradouro": "Rua Mário Soares",
-        "estado": "MG",
-        "cidade": "Belo Horizonte",
-        "bairro": "Dom Bosco",
-        "siafi": "4123",
-        "ibge": "3106200",
-        "ddd": "31",
-        "gia": ""
-      },
-      "dataRegistro": "2025-06-08T14:12:55.212Z"
     },
     {
       "id": "3",
@@ -207,7 +185,7 @@
       ],
       "endereco": {
         "cep": "",
-        "logradouro": "Rua Padre Eustáquio, bairro Padre Eustáquio",
+        "logradouro": "Av. Pará de Minas",
         "estado": "MG",
         "cidade": "Belo Horizonte",
         "bairro": "Padre Eustáquio"
@@ -237,7 +215,7 @@
       ],
       "endereco": {
         "cep": "",
-        "logradouro": "Rua Sapucaí, Floresta",
+        "logradouro": "Rua Sapucaí",
         "estado": "MG",
         "cidade": "Belo Horizonte",
         "bairro": "Floresta"
@@ -262,7 +240,7 @@
       ],
       "endereco": {
         "cep": "",
-        "logradouro": "Rua dos Tupinambás, Centro",
+        "logradouro": "Rua dos Tupinambás",
         "estado": "MG",
         "cidade": "Belo Horizonte",
         "bairro": "Centro"
@@ -281,7 +259,7 @@
       ],
       "endereco": {
         "cep": "",
-        "logradouro": "Avenida Amazonas, Centro",
+        "logradouro": "Avenida Amazonas",
         "estado": "MG",
         "cidade": "Belo Horizonte",
         "bairro": "Centro"
