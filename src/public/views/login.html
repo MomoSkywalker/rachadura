@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Radar Urbano - Login</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/atualizar_denuncias.css"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</head>
+
+<body>
+  <header>
+    <h1 class="titulo-header">Radar Urbano</h1>
+  </header>
+
+  <main class="container my-4 d-flex justify-content-center align-items-center" style="min-height: 60vh;">
+    <div class="w-100" style="max-width: 400px;">
+      <div class="card shadow-sm p-4">
+        <h3 class="text-center mb-4">Login</h3>
+        <form id="login-form" class="form">
+          <div class="form-group mb-3">
+            <label for="username" class="form-label">Usuário</label>
+            <input type="text" name="username" id="username" class="form-control" required>
+          </div>
+          <div class="form-group mb-4">
+            <label for="password" class="form-label">Senha</label>
+            <input type="password" name="password" id="password" class="form-control" required>
+          </div>
+          <div class="d-flex justify-content-between align-items-center">
+            <button type="button" class="btn btn-link p-0" data-bs-toggle="modal" data-bs-target="#registerModal">
+              <i class="bi bi-person-plus"></i> Novo usuário
+            </button>
+            <button type="submit" class="btn btn-primary">Login</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="registerModalLabel">Novo Usuário</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body">
+          <form id="register-form" class="form">
+            <div class="form-group mb-3">
+              <label for="reg-usuario" class="form-label">Usuário (login)</label>
+              <input type="text" id="reg-usuario" class="form-control" required>
+            </div>
+            <div class="form-group mb-3">
+              <label for="reg-nome" class="form-label">Nome completo</label>
+              <input type="text" id="reg-nome" class="form-control" required>
+            </div>
+            <div class="form-group mb-3">
+              <label for="reg-email" class="form-label">Email</label>
+              <input type="email" id="reg-email" class="form-control" required>
+            </div>
+            <div class="form-group mb-3">
+              <label for="reg-foto" class="form-label">Foto de Perfil (Opcional)</label>
+              <input type="file" id="reg-foto" class="form-control" accept="image/*">
+            </div>
+            <div class="form-group mb-3">
+              <label for="reg-senha" class="form-label">Senha</label>
+              <input type="password" id="reg-senha" class="form-control" required>
+            </div>
+            <div class="form-group mb-3">
+              <label for="reg-senha2" class="form-label">Confirmação de Senha</label>
+              <input type="password" id="reg-senha2" class="form-control" required>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" id="btn-salvar-usuario" class="btn btn-primary">Salvar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <a href="/views/faq.html" class="footer-button">Perguntas Frequentes</a>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="../assets/js/login.js"></script>
+</body>
+</html>
