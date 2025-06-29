@@ -547,7 +547,12 @@ select, option {
     max-width: 100%;
     padding: 0.7rem;
     border-radius: 0.8rem;
+    
   }
+  nav.navbar{
+ background-color: transparent;
+ box-shadow: none;
+}
 }
 
 @media (max-width: 768px) {
