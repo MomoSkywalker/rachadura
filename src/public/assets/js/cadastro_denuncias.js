@@ -79,6 +79,7 @@ createApp({
           alert("Denúncia enviada com sucesso!");
           console.log(response.data);
           this.mostrarTabela();
+          window.location.href = "/views/feed.html";
         })
         .catch(error => {
           alert("Erro ao enviar denúncia");
