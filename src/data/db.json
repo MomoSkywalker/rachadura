@@ -12,7 +12,18 @@
       "nivel": "usuario",
       "status": "ativo",
       "tentativas_login": 0,
-      "ultima_atividade": "2025-06-12T09:30:00.000Z"
+      "ultima_atividade": "2025-06-12T09:30:00.000Z",
+      "cpf": "123.456.789-00",
+      "data_nascimento": "1990-05-15",
+      "endereco_residencial": {
+        "cep": "30190-100",
+        "logradouro": "Rua dos Goitacazes",
+        "numero": "123",
+        "complemento": "Apto 45",
+        "bairro": "Centro",
+        "cidade": "Belo Horizonte",
+        "estado": "MG"
+      }
     },
     {
       "id": "user_53421",
@@ -26,7 +37,18 @@
       "nivel": "usuario",
       "status": "ativo",
       "tentativas_login": 0,
-      "ultima_atividade": "2025-06-12T11:11:00.000Z"
+      "ultima_atividade": "2025-06-12T11:11:00.000Z",
+      "cpf": "234.567.890-11",
+      "data_nascimento": "1991-08-20",
+      "endereco_residencial": {
+        "cep": "30130-110",
+        "logradouro": "Avenida Afonso Pena",
+        "numero": "456",
+        "complemento": "Apto 901",
+        "bairro": "Funcionários",
+        "cidade": "Belo Horizonte",
+        "estado": "MG"
+      }
     },
     {
       "id": "user_12345",
@@ -40,7 +62,18 @@
       "nivel": "usuario",
       "status": "ativo",
       "tentativas_login": 0,
-      "ultima_atividade": "2025-06-12T12:01:00.000Z"
+      "ultima_atividade": "2025-06-12T12:01:00.000Z",
+      "cpf": "345.678.901-22",
+      "data_nascimento": "1989-03-30",
+      "endereco_residencial": {
+        "cep": "30550-220",
+        "logradouro": "Rua Desembargador Barcelos",
+        "numero": "77",
+        "complemento": "",
+        "bairro": "Nova Suíssa",
+        "cidade": "Belo Horizonte",
+        "estado": "MG"
+      }
     },
     {
       "id": "user_67890",
@@ -54,7 +87,18 @@
       "nivel": "usuario",
       "status": "ativo",
       "tentativas_login": 0,
-      "ultima_atividade": "2025-06-12T12:02:00.000Z"
+      "ultima_atividade": "2025-06-12T12:02:00.000Z",
+      "cpf": "456.789.012-33",
+      "data_nascimento": "1992-07-18",
+      "endereco_residencial": {
+        "cep": "31270-010",
+        "logradouro": "Rua Itapetinga",
+        "numero": "890",
+        "complemento": "",
+        "bairro": "Santo André",
+        "cidade": "Belo Horizonte",
+        "estado": "MG"
+      }
     },
     {
       "id": "user_54321",
@@ -68,7 +112,18 @@
       "nivel": "usuario",
       "status": "ativo",
       "tentativas_login": 0,
-      "ultima_atividade": "2025-06-12T12:03:00.000Z"
+      "ultima_atividade": "2025-06-12T12:03:00.000Z",
+      "cpf": "567.890.123-44",
+      "data_nascimento": "1987-10-04",
+      "endereco_residencial": {
+        "cep": "31310-070",
+        "logradouro": "Avenida Fleming",
+        "numero": "250",
+        "complemento": "Bloco 3",
+        "bairro": "Ouro Preto",
+        "cidade": "Belo Horizonte",
+        "estado": "MG"
+      }
     },
     {
       "id": "user_45678",
@@ -82,7 +137,18 @@
       "nivel": "usuario",
       "status": "ativo",
       "tentativas_login": 0,
-      "ultima_atividade": "2025-06-12T12:04:00.000Z"
+      "ultima_atividade": "2025-06-12T12:04:00.000Z",
+      "cpf": "678.901.234-55",
+      "data_nascimento": "1995-02-28",
+      "endereco_residencial": {
+        "cep": "30535-630",
+        "logradouro": "Rua Conde de Linhares",
+        "numero": "45",
+        "complemento": "Casa",
+        "bairro": "Cidade Jardim",
+        "cidade": "Belo Horizonte",
+        "estado": "MG"
+      }
     }
   ],
   "denuncias": [
