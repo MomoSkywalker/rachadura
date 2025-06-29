@@ -56,7 +56,7 @@ async function renderDenuncia() {
   else if (denuncia.imagem) midiasHtml = `<img src="${denuncia.imagem}" style="max-width:420px;margin:10px 0;border-radius:10px;">`;
 
   document.getElementById("denunciaDetalhe").innerHTML = `
-  <div class="card shadow-sm border-0 mb-3" style="max-width: 620px; margin:auto;">
+  <div class="card border-0 mb-3" style="max-width: 620px; margin:auto;">
     <div class="card-body">
       <div class="d-flex align-items-center mb-3">
         <img src="${usuario.foto_perfil}" class="rounded-circle me-3" width="48" height="48" alt="Usuário">
