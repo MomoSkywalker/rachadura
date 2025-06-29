@@ -17,6 +17,7 @@ let denunciaParaEdicao = {
 // 1. Carregar Dados Denúncia
 // -------------------------
 async function carregarDadosDenuncia() {
+console.log("ID buscado:", currentDenunciaId);
   if (!currentDenunciaId) {
     document.getElementById("cartao-title").textContent = "Nova Denúncia";
     document.getElementById("btn-delete").style.display = "none";
@@ -26,6 +27,7 @@ async function carregarDadosDenuncia() {
   }
   try {
     const res = await fetch(`${API_URL}/${currentDenunciaId}`);
+    console.log("Resposta fetch:", res.status, await res.clone().text());
     if (!res.ok) throw new Error();
     const denuncia = await res.json();
 
