@@ -1,56 +1,23 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Denúncias</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/css/comentarios.css">
+  <meta charset="UTF-8" />
+  <title>Comentários da Denúncia</title>
+  <link rel="stylesheet" href="../assets/css/comentarios.css">
 </head>
 <body>
-    <header>
-        <h1>Radar Urbano</h1>
-        <button class="botao" id="novaDenunciaBtn">Nova Denúncia</button>
-    </header>
-
-    <main>
-        <div class="feed-container" id="feedContainer">
-            <!-- Feed será carregado dinamicamente pelo JavaScript -->
-        </div>
-    </main>
-
-    <footer>
-        <a href="/views/home_page.html" class="botao">Início</a>
-        <a class="botao" href="/views/perfil.html">Perfil</a>
-    </footer>
-
-    <!-- Modal para nova denúncia/edição -->
-    <div class="modal" id="denunciaModal">
-        <div class="modal-content">
-            <div class="modal-title" id="modalTitle">Nova Denúncia</div>
-            <input type="text" id="denunciaUsuario" class="modal-input" placeholder="Seu nome" required>
-            <input type="text" id="denunciaLocalizacao" class="modal-input" placeholder="Localização" required>
-            <input type="text" id="denunciaDescricao" class="modal-input" placeholder="Descrição" required>
-            <input type="text" id="denunciaImagem" class="modal-input" placeholder="URL da imagem">
-            <div class="modal-buttons">
-                <button class="modal-btn modal-btn-cancel" id="cancelarDenunciaBtn">Cancelar</button>
-                <button class="modal-btn modal-btn-confirm" id="confirmarDenunciaBtn">Salvar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de confirmação para exclusão -->
-    <div class="modal" id="confirmacaoModal">
-        <div class="modal-content">
-            <div class="modal-title">Confirmar Exclusão</div>
-            <p id="confirmacaoMensagem">Tem certeza que deseja excluir esta denúncia?</p>
-            <div class="modal-buttons">
-                <button class="modal-btn modal-btn-cancel" id="cancelarExclusaoBtn">Cancelar</button>
-                <button class="modal-btn modal-btn-confirm" id="confirmarExclusaoBtn">Excluir</button>
-            </div>
-        </div>
-    </div>
-    
-    <script src="../assets/js/comentarios.js"></script>
+  <main class="comentario-main">
+    <section id="denunciaDetalhe" class="cartao"></section>
+    <section id="timelineContainer" class="cartao"></section>
+    <section id="comentariosContainer" class="cartao">
+      <h2>Comentários</h2>
+      <div id="listaComentarios"></div>
+      <form id="formComentario" autocomplete="off">
+        <textarea id="novoComentario" placeholder="Escreva seu comentário..." required></textarea>
+        <button type="submit">Enviar comentário</button>
+      </form>
+    </section>
+  </main>
+  <script src="../assets/js/comentarios.js"></script>
 </body>
 </html>
