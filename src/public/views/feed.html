@@ -34,8 +34,14 @@
         <div class="localizacao">${item.localizacao}</div>
         <div class="categoria">${item.categoria ? 'Categoria: ' + item.categoria : ''}</div>
       `;
+      // ADICIONE ESSE BLOCO:
+      card.addEventListener('click', () => {
+        // Usando id ou outro campo único
+        window.location.href = `/views/comentarios.html?id=${encodeURIComponent(item.id)}`;
+      });
       feed.appendChild(card);
     });
+
   });
   </script>
   <footer class="footer">

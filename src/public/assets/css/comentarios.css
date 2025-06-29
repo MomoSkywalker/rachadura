@@ -1,3 +1,6 @@
+
+
+
 :root {
   --cor-fundo: #D3CFE3;
   --cor-botao: #B3A5D8;
@@ -17,10 +20,11 @@
 body {
   background-color: var(--cor-fundo);
   padding: 16px;
-  padding-bottom: 80px; /* Espaço para o footer fixo */
+  padding-bottom: 80px;
 }
 
-header, footer {
+header,
+footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -43,13 +47,18 @@ footer {
   right: 16px;
 }
 
-/* Estilos para posts */
+.feed-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
 .post {
   background-color: var(--cor-cartao);
   border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   padding: 16px;
   margin-bottom: 16px;
+  position: relative;
 }
 
 .post-header {
@@ -76,12 +85,17 @@ footer {
   color: var(--cor-texto-secundario);
 }
 
+.post-image-container {
+  position: relative;
+  margin: 12px 0;
+}
+
 .post-image {
   width: 100%;
   border-radius: 8px;
-  margin: 12px 0;
   max-height: 300px;
   object-fit: cover;
+  display: block;
 }
 
 .post-description {
@@ -90,7 +104,39 @@ footer {
   font-size: 14px;
 }
 
-/* Estilos para a seção de comentários */
+.reaction-buttons {
+  display: flex;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.reaction-btn {
+  background-color: var(--cor-cartao);
+  border: 2px solid var(--cor-botao);
+  border-radius: 20px;
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.reaction-btn:hover {
+  transform: scale(1.05);
+}
+
+.reaction-btn.active {
+  background-color: var(--cor-botao);
+  font-weight: bold;
+}
+
+.reaction-icon {
+  width: 16px;
+  height: 16px;
+}
+
 .comments-section {
   margin-top: 16px;
   border-top: 1px solid var(--cor-botao);
@@ -107,6 +153,7 @@ footer {
 .comment {
   display: flex;
   margin: 12px 0;
+  position: relative;
 }
 
 .comment-avatar {
@@ -136,6 +183,22 @@ footer {
 .comment-date {
   font-size: 12px;
   color: var(--cor-texto-secundario);
+}
+
+.comment-actions {
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: flex;
+  gap: 8px;
+}
+
+.comment-action {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--cor-destaque);
+  font-size: 12px;
 }
 
 .comment-form {
@@ -170,49 +233,115 @@ footer {
   padding: 12px 0;
 }
 
-/* Classes do template original */
-.botao {
-  background-color: var(--cor-botao);
-  color: var(--cor-texto);
-  border: none;
-  border-radius: 12px;
-  padding: 12px 20px;
-  font-weight: bold;
-  margin: 10px 0;
-  width: 100%;
-  cursor: pointer;
+.post-actions {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  gap: 8px;
 }
 
-.input {
+.action-btn {
   background-color: var(--cor-cartao);
   border: 2px solid var(--cor-botao);
-  border-radius: 10px;
-  padding: 10px;
-  margin-bottom: 12px;
-  width: 100%;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
-.cartao {
+.action-btn:hover {
+  background-color: var(--cor-botao);
+}
+
+.action-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
   background-color: var(--cor-cartao);
+  padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  padding: 16px;
+  width: 90%;
+  max-width: 500px;
+}
+
+.modal-title {
+  font-size: 18px;
+  font-weight: bold;
   margin-bottom: 16px;
 }
 
-.titulo {
-  font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 12px;
-  color: var(--cor-texto);
+.modal-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 16px;
+  border: 2px solid var(--cor-botao);
+  border-radius: 8px;
 }
 
-.descricao {
-  font-size: 14px;
-  color: var(--cor-texto-secundario);
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
 }
 
-.icone {
-  width: 24px;
-  height: 24px;
+.modal-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.modal-btn-cancel {
+  background-color: var(--cor-cartao);
+  border: 2px solid var(--cor-botao);
+}
+
+.modal-btn-confirm {
+  background-color: var(--cor-botao);
+  border: none;
+  font-weight: bold;
+}
+
+.edit-comment-form {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.edit-comment-input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid var(--cor-botao);
+  border-radius: 6px;
+}
+
+.edit-comment-buttons {
+  display: flex;
+  gap: 4px;
+}
+
+.edit-comment-btn {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
 }
