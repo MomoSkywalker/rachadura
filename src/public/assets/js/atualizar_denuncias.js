@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- ELEMENTOS DO DOM ---
     const tituloDisplay = document.getElementById('denuncia-titulo-display');
+    const descricaoDisplay = document.getElementById('denuncia-descricao-display');
     const categoriaDisplay = document.getElementById('denuncia-categoria-display');
     const enderecoDisplay = document.getElementById('denuncia-endereco-display');
     const midiasExistentesContainer = document.getElementById('midias-existentes-container');
@@ -18,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const statusSelect = document.getElementById('timeline-new-status-select');
     const notasTextarea = document.getElementById('timeline-new-notes');
     const btnAddTimeline = document.getElementById('btn-add-timeline-event');
-    
+
     // Botões de Ação
     const btnSalvar = document.getElementById('btn-save');
     const btnExcluir = document.getElementById('btn-delete');
@@ -51,6 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Renderiza os elementos da página com os dados da denúncia
     const renderizarPagina = () => {
         tituloDisplay.textContent = denunciaAtual.titulo || "Título não encontrado";
+        descricaoDisplay.textContent = denunciaAtual.descricao || "Esta denúncia não possui uma descrição detalhada."; 
         categoriaDisplay.textContent = `Categoria: ${denunciaAtual.categoria || "Não informada"}`;
         enderecoDisplay.textContent = `Local: ${formatarEndereco(denunciaAtual.endereco)}`;
         descricaoTextarea.value = denunciaAtual.descricao || "";
@@ -84,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     };
-    
+
     // Converte arquivos para Base64
     const fileToBase64 = (file) => {
         return new Promise((resolve, reject) => {
@@ -151,33 +153,50 @@ document.addEventListener('DOMContentLoaded', () => {
     formAtualizacao.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        // 1. Adiciona o novo evento da timeline, se houver
+        // 1. Pega o novo status e notas da timeline
         const novoStatus = statusSelect.value;
+        const novasNotas = notasTextarea.value.trim();
+
+        // 2. Pega as novas mídias que o usuário selecionou
+        const novasMidiasUrls = novasMidias.map(m => m.base64);
+
+        // Validação: Se um novo status foi selecionado ou novas mídias foram adicionadas,
+        // um status é obrigatório para contextualizar a atualização.
+        if ((novoStatus || novasMidiasUrls.length > 0) && !novoStatus) {
+            alert("Por favor, selecione um status para acompanhar as novas mídias ou notas.");
+            statusSelect.focus();
+            return;
+        }
+
+        // 3. Cria um novo evento de timeline, se houver um novo status
         if (novoStatus) {
-            denunciaAtual.timeline.push({
+            const novoEventoTimeline = {
                 status: novoStatus,
                 timestamp: new Date().toISOString(),
-                notas: notasTextarea.value.trim() || ""
-            });
+                notas: novasNotas || "",
+                midias: novasMidiasUrls // <-- A MÁGICA ACONTECE AQUI! As novas mídias são anexadas a este evento.
+            };
+            // Adiciona o novo evento ao histórico da denúncia
+            if (!Array.isArray(denunciaAtual.timeline)) {
+                denunciaAtual.timeline = [];
+            }
+            denunciaAtual.timeline.push(novoEventoTimeline);
         }
-        
-        // 2. Adiciona as novas mídias ao array de mídias existente
-        const novasMidiasUrls = novasMidias.map(m => m.base64);
-        denunciaAtual.midias = [...(denunciaAtual.midias || []), ...novasMidiasUrls];
-        
-        // 3. Atualiza a descrição
+
+        // 4. Atualiza a descrição (a única outra informação editável)
         denunciaAtual.descricao = descricaoTextarea.value;
-        
+
+        // 5. Envia o objeto COMPLETO da denúncia para ser atualizado no backend
         try {
             await axios.put(`https://rachadura.onrender.com/api/denuncias/${denunciaAtual.id}`, denunciaAtual);
             alert("Denúncia atualizada com sucesso!");
-            window.location.href = `/views/home_page.html`;
+            // Redireciona para a página de comentários/detalhes para ver o resultado
+            window.location.href = `/views/comentarios.html?id=${denunciaAtual.id}`;
         } catch (error) {
             console.error("Erro ao salvar as alterações:", error);
             alert("Não foi possível salvar as alterações. Tente novamente.");
         }
     });
-
     // Excluir denúncia
     btnExcluir.addEventListener('click', async () => {
         if (confirm("Tem certeza que deseja excluir esta denúncia? Esta ação não pode ser desfeita.")) {
@@ -191,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
-    
+
     // Adicionar novas mídias
     btnAddMidia.addEventListener('click', () => midiaInput.click());
     midiaInput.addEventListener('change', async (e) => {
@@ -213,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
             alert("Por favor, selecione um status.");
             return;
         }
-        
+
         const novoEvento = {
             status,
             timestamp: new Date().toISOString(),
@@ -233,10 +252,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Limpa os campos
         statusSelect.value = "";
         notasTextarea.value = "";
-        
+
         alert("Evento adicionado. Clique em 'Salvar Alterações' para confirmar.");
     });
-    
+
     btnVoltar.addEventListener('click', () => window.history.back());
 
     // --- INICIALIZAÇÃO ---
