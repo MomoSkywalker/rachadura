@@ -93,7 +93,7 @@ function renderTimeline(denuncia) {
             <span class="timeline-status">${ev.status}</span>
             <span class="timeline-date">${ev.timestamp ? new Date(ev.timestamp).toLocaleString('pt-BR') : ""}</span>
             <div class="timeline-notas">${ev.notas || ""}</div>
-            ${midiasHtml} {/* <-- Mídias inseridas aqui */}
+            ${midiasHtml}
           </div>
         `;
     });
