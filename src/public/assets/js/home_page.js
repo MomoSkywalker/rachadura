@@ -45,22 +45,25 @@ function renderizarMarcadores() {
   console.log(`Aplicando filtro: ${filtro}`);
 
   denuncias.forEach((denuncia) => {
-    // Verifica se tem coordenadas válidas
-    if (!denuncia.lat || !denuncia.lng) {
+
+    const endereco = denuncia.endereco || {};
+
+    // A verificação agora busca as coordenadas DENTRO do objeto de endereço.
+    if (!endereco.lat || !endereco.lng) {
       console.warn(`Denúncia ${denuncia.id} sem coordenadas válidas:`, denuncia);
       return;
     }
 
     const visivel = filtro === "todas" || denuncia.categoria === filtro;
+    
+    // A posição do marcador agora usa as coordenadas do objeto 'endereco'.
     const position = { 
-      lat: parseFloat(denuncia.lat), 
-      lng: parseFloat(denuncia.lng) 
+      lat: parseFloat(endereco.lat), 
+      lng: parseFloat(endereco.lng) 
     };
 
     console.log(`Processando denúncia ${denuncia.id} em:`, position);
     
-
-    const endereco = denuncia.endereco || {};
     const imagemUrl = denuncia.midias && denuncia.midias.length > 0 ? denuncia.midias[0] : null;
 
     const content = `

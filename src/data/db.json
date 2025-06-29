@@ -86,8 +86,6 @@
       "titulo": "Buraco enorme na Rua dos Goitacazes",
       "descricao": "Buraco enorme na Rua dos Goitacazes, próximo ao número 1400. Difícil para carros e perigoso para pedestres.",
       "categoria": "Buracos",
-      "lat": -19.917299,
-      "lng": -43.938622,
       "midias": [
         "https://img.nsctotal.com.br/wp-content/uploads/2023/05/AdobeStock_282004392-800x531.jpeg"
       ],
@@ -96,7 +94,9 @@
         "logradouro": "Rua dos Goitacazes",
         "estado": "MG",
         "cidade": "Belo Horizonte",
-        "bairro": "Centro"
+        "bairro": "Centro",
+        "lat": -19.917299,
+        "lng": -43.938622
       },
       "dataRegistro": "2025-06-10T09:00:00.000Z",
       "timeline": []
@@ -107,6 +107,7 @@
       "titulo": "Semáforo quebrado há dias",
       "descricao": "Semáforo quebrado há dias, causando confusão no cruzamento.",
       "categoria": "Semáforos",
+
       "midias": [
         "https://sertao24horas.com.br/wp-content/uploads/2024/02/WhatsApp-Image-2024-02-21-at-15.22.16.jpeg"
       ],
@@ -115,7 +116,9 @@
         "logradouro": "Avenida Afonso Pena",
         "estado": "MG",
         "cidade": "Belo Horizonte",
-        "bairro": "Centro"
+        "bairro": "Centro",
+        "lat": -19.9128,
+        "lng": -43.9408
       },
       "dataRegistro": "2025-06-10T10:00:00.000Z",
       "timeline": []
@@ -134,7 +137,9 @@
         "logradouro": "Av. Pará de Minas",
         "estado": "MG",
         "cidade": "Belo Horizonte",
-        "bairro": "Padre Eustáquio"
+        "bairro": "Padre Eustáquio",
+        "lat": -19.9250,
+        "lng": -43.9580
       },
       "dataRegistro": "2025-06-10T11:00:00.000Z",
       "timeline": [
@@ -164,7 +169,9 @@
         "logradouro": "Rua Sapucaí",
         "estado": "MG",
         "cidade": "Belo Horizonte",
-        "bairro": "Floresta"
+        "bairro": "Floresta",
+        "lat": -19.9035,
+        "lng": -43.9452
       },
       "dataRegistro": "2025-06-10T12:00:00.000Z",
       "timeline": [
@@ -189,7 +196,9 @@
         "logradouro": "Rua dos Tupinambás",
         "estado": "MG",
         "cidade": "Belo Horizonte",
-        "bairro": "Centro"
+        "bairro": "Centro",
+        "lat": -19.9223,
+        "lng": -43.9271
       },
       "dataRegistro": "2025-06-10T13:00:00.000Z",
       "timeline": []
@@ -208,7 +217,9 @@
         "logradouro": "Avenida Amazonas",
         "estado": "MG",
         "cidade": "Belo Horizonte",
-        "bairro": "Centro"
+        "bairro": "Centro",
+        "lat": -19.9104,
+        "lng": -43.9219
       },
       "dataRegistro": "2025-06-10T14:00:00.000Z",
       "timeline": []

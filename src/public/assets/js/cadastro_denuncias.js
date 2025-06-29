@@ -1,7 +1,6 @@
 const { createApp } = Vue;
 
-// ---> NOVO <---
-// Coloque aqui a sua chave de API da Plataforma Google Maps
+
 const SUA_CHAVE_API_DO_GOOGLE = "AIzaSyCXaSAFrF6bVb5s5eI2uQDTyE231PgkVbw"; 
 
 createApp({
@@ -10,12 +9,12 @@ createApp({
       endereco: {
         cep: "",
         logradouro: "",
-        numero: "", // ---> NOVO <--- Campo para o número do endereço
+        numero: "", 
         estado: "",
         cidade: "",
         bairro: "",
-        lat: null,  // ---> NOVO <--- Campo para Latitude
-        lng: null   // ---> NOVO <--- Campo para Longitude
+        lat: null,  
+        lng: null   
       },
       enderecoBloqueado: false,
       imagensBase64: []
@@ -23,8 +22,7 @@ createApp({
   },
 
   methods: {
-    // ---> MODIFICADO <---
-    // Agora o evento de CEP também tentará geocodificar
+
     cepAlteradoEvento() {
       if (!this.endereco.cep) return;
       axios.get(`https://viacep.com.br/ws/${this.endereco.cep}/json/`)
@@ -45,7 +43,7 @@ createApp({
         });
     },
 
-    // ---> NOVO <---
+
     // Nova função para geocodificação usando a API do Google
     async geocodificarEndereco() {
       // Monta a string de endereço completa para ser mais preciso
@@ -83,7 +81,7 @@ createApp({
     },
     
     async filesToBase64(files) {
-      // (Esta função permanece inalterada)
+  
       return Promise.all(Array.from(files).map(file => {
         return new Promise((resolve, reject) => {
           const reader = new FileReader();
@@ -94,18 +92,16 @@ createApp({
       }));
     },
 
-    // ---> MODIFICADO <---
-    // Agora o formulário valida se as coordenadas foram geradas
+  
     async enviarFormulario(event) {
       event.preventDefault();
       
-      // ---> NOVO <---
-      // Validação para garantir que a geocodificação ocorreu
+
       if (!this.endereco.lat || !this.endereco.lng) {
         alert("Por favor, verifique o endereço para que as coordenadas possam ser geradas antes de enviar.");
-        // Opcional: Chamar a geocodificação novamente
+
         await this.geocodificarEndereco();
-        // Se ainda assim não encontrar, impede o envio
+
         if (!this.endereco.lat || !this.endereco.lng) return;
       }
 
@@ -123,7 +119,7 @@ createApp({
         notas: "Denúncia registrada pelo usuário."
       }];
       
-      // ---> MODIFICADO <---
+
       // O objeto 'dados' agora inclui o objeto 'endereco' completo com lat e lng
       const dados = {
         usuarioId,
@@ -150,7 +146,7 @@ createApp({
     },
 
     mostrarTabela() {
-      // (Esta função permanece inalterada)
+
       const usuarioId = localStorage.getItem("usuarioId");
 
       if (!usuarioId) {
@@ -214,7 +210,7 @@ createApp({
   },
 
   mounted() {
-    // (Esta função permanece praticamente inalterada)
+
     const form = document.getElementById("formDenuncia");
     const botaoCancelar = document.getElementById("btn-back");
 
@@ -246,7 +242,7 @@ createApp({
 
 }).mount("#appCep");
 
-// (Esta parte permanece inalterada)
+
 if (!localStorage.getItem("usuarioId")) {
   const randomId = "user_" + Math.floor(Math.random() * 100000);
   localStorage.setItem("usuarioId", randomId);
