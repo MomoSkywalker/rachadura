@@ -1,31 +1,34 @@
-fetch('https://rachadura.onrender.com/api/denuncias')
-    .then(response => response.json())
-    .then(denuncias => {
-        const feed = document.getElementById('feed');
-        feed.innerHTML = ''; // limpa o feed
+Promise.all([
+  fetch('/api/denuncias').then(r => r.json()),
+  fetch('/api/usuarios').then(r => r.json())
+]).then(([denuncias, usuarios]) => {
+  // Mapeia usuários por ID para acesso rápido
+  const usuariosMap = {};
+  usuarios.forEach(u => { usuariosMap[u.id] = u; });
 
-        denuncias.forEach(denuncia => {
-            const end = denuncia.endereco || {};
-            const enderecoFormatado = `${end.logradouro || ""}, ${end.bairro || ""}, ${end.cidade || ""}`;
-            const card = document.createElement('div');
-            card.className = 'cartao';
+  denuncias.forEach(denuncia => {
+    const usuario = usuariosMap[denuncia.usuarioId] || {
+      nome: "Usuário Desconhecido",
+      foto_perfil: "https://placehold.co/32x32?text=U"
+    };
 
-            card.innerHTML = `
-        <div class="perfil">
-          <img src="${denuncia.foto_perfil || 'https://placehold.co/32x32?text=U'}" alt="Perfil" class="icone" style="width:32px; height:32px; border-radius:50%;">
-          <span class="usuario">${denuncia.usuarioId || 'Usuário'}</span>
-        </div>
-        <img src="${denuncia.imagem || denuncia.midias?.[0] || 'https://placehold.co/400x200?text=Denúncia'}" alt="Denúncia" class="imagem-denuncia" style="width:100%;max-width:420px;border-radius:10px;margin:12px 0;">
-        <div class="descricao">${denuncia.descricao || ''}</div>
-        <div class="localizacao">${enderecoFormatado}</div>
-        <div class="categoria">${denuncia.categoria ? 'Categoria: ' + denuncia.categoria : ''}</div>
-      `;
-
-            // Evento de clique: abre a página de comentários da denúncia
-            card.addEventListener('click', () => {
-                window.location.href = `/views/comentarios.html?id=${encodeURIComponent(denuncia.id)}`;
-            });
-
-            feed.appendChild(card);
-        });
+    const card = document.createElement('div');
+    card.className = 'cartao';
+    card.innerHTML = `
+      <div class="perfil">
+        <img src="${usuario.foto_perfil}" alt="Perfil" class="icone" style="width:32px; height:32px; border-radius:50%;">
+        <span class="usuario">${usuario.nome}</span>
+      </div>
+      <img src="${denuncia.midias && denuncia.midias[0] ? denuncia.midias[0] : 'https://placehold.co/400x200?text=Denúncia'}" class="imagem-denuncia" alt="Imagem denúncia" style="width:100%;max-width:420px;border-radius:10px;margin:12px 0;">
+      <div class="descricao">${denuncia.descricao || ''}</div>
+      <div class="localizacao">${denuncia.endereco ? denuncia.endereco.logradouro : ''}</div>
+      <div class="categoria">${denuncia.categoria ? 'Categoria: ' + denuncia.categoria : ''}</div>
+    `;
+    // Evento de clique para abrir detalhes/comentários
+    card.addEventListener('click', () => {
+      window.location.href = `/views/comentarios.html?id=${encodeURIComponent(denuncia.id)}`;
     });
+
+    document.getElementById('feed').appendChild(card);
+  });
+});
