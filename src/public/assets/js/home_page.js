@@ -7,23 +7,23 @@ let marcadorUsuario = null;
 async function carregarDenuncias() {
   try {
     console.log("Carregando denúncias...");
-    
+
     const response = await fetch('https://rachadura.onrender.com/api/denuncias');
-    
+
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    
+
     const data = await response.json();
-    
+
     denuncias = data || [];
-    
+
     console.log(`${denuncias.length} denúncias carregadas:`, denuncias);
-    
+
     if (denuncias.length === 0) {
       console.warn("Nenhuma denúncia foi carregada da API.");
     }
-    
+
     renderizarMarcadores();
   } catch (err) {
     console.error("Falha ao carregar denúncias:", err);
@@ -34,7 +34,7 @@ async function carregarDenuncias() {
 // Função para renderizar marcadores no mapa
 function renderizarMarcadores() {
   console.log("Renderizando marcadores...");
-  
+
   // Limpa marcadores existentes
   miniMarkers.forEach(m => m.setMap(null));
   fullMarkers.forEach(m => m.setMap(null));
@@ -54,16 +54,16 @@ function renderizarMarcadores() {
       return;
     }
 
-    const visivel = filtro === "todas" || denuncia.categoria === filtro;
-    
+    const visivel = filtro === "todas" || filtro === "" || denuncia.categoria === filtro;
+
     // A posição do marcador agora usa as coordenadas do objeto 'endereco'.
-    const position = { 
-      lat: parseFloat(endereco.lat), 
-      lng: parseFloat(endereco.lng) 
+    const position = {
+      lat: parseFloat(endereco.lat),
+      lng: parseFloat(endereco.lng)
     };
 
     console.log(`Processando denúncia ${denuncia.id} em:`, position);
-    
+
     const imagemUrl = denuncia.midias && denuncia.midias.length > 0 ? denuncia.midias[0] : null;
 
     const content = `
@@ -76,7 +76,7 @@ function renderizarMarcadores() {
     `;
 
     const infoWindow = new google.maps.InfoWindow({ content });
-    
+
     const markerTitle = denuncia.titulo || `Denúncia #${denuncia.id}`;
 
     // Marcador no mapa mini
@@ -108,9 +108,9 @@ function renderizarMarcadores() {
   console.log(`${fullMarkers.length} marcadores renderizados no fullMap`);
 }
 
-window.initMaps = function(){
+window.initMaps = function () {
   console.log("Inicializando mapas...");
-  
+
   // Coordenadas padrão (Centro de Belo Horizonte)
   const defaultCoords = { lat: -19.9167, lng: -43.9345 };
 
