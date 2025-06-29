@@ -44,10 +44,10 @@ function renderizarMarcadores() {
   const filtro = document.getElementById("filtroCategoria").value;
   console.log(`Aplicando filtro: ${filtro}`);
 
-  denuncias.forEach((denuncia, index) => {
+  denuncias.forEach((denuncia, denuncia.id) => {
     // Verifica se tem coordenadas válidas
     if (!denuncia.lat || !denuncia.lng) {
-      console.warn(`Denúncia ${index} sem coordenadas válidas:`, denuncia);
+      console.warn(`Denúncia ${denuncia.id} sem coordenadas válidas:`, denuncia);
       return;
     }
 
@@ -57,7 +57,7 @@ function renderizarMarcadores() {
       lng: parseFloat(denuncia.lng) 
     };
 
-    console.log(`Processando denúncia ${index} em:`, position);
+    console.log(`Processando denúncia ${denuncia.id} em:`, position);
 
     const content = `
       <div style="max-width: 200px;">
@@ -75,7 +75,7 @@ function renderizarMarcadores() {
       const markerMini = new google.maps.Marker({
         position,
         map: miniMap,
-        title: `Denúncia #${index + 1}`,
+        title: `Denúncia #${denuncia.id + 1}`,
       });
       markerMini.addListener("click", () => {
         infoWindow.open(miniMap, markerMini);
@@ -87,7 +87,7 @@ function renderizarMarcadores() {
     const markerFull = new google.maps.Marker({
       position,
       map: visivel ? fullMap : null,
-      title: `Denúncia #${index + 1}`,
+      title: `Denúncia #${denuncia.id + 1}`,
     });
     markerFull.addListener("click", () => {
       infoWindow.open(fullMap, markerFull);
