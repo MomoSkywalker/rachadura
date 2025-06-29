@@ -1,277 +1,365 @@
-const API_URL = "https://rachadura.onrender.com/api/denuncias";
-const params = new URLSearchParams(window.location.search);
-const currentDenunciaId = params.get("id");
+// script.js
+console.log("Arquivo script.js carregado.");
 
-// Estado temporário para edição
-let denunciaParaEdicao = {
-  titulo: "",
-  categoria: "",
-  descricao: "",
-  endereco: {},
-  imagem: null,
-  video: null,
-  timeline: []
+const paginaAtualPath = window.location.pathname;
+const nomePaginaAtual = paginaAtualPath.substring(paginaAtualPath.lastIndexOf("/") + 1);
+
+const DENUNCIAS_STORAGE_KEY = 'denunciasUrbanasApp';
+
+// Função para buscar as denúncias do localStorage
+const getDenunciasFromStorage = () => {
+    const denunciasJSON = localStorage.getItem(DENUNCIAS_STORAGE_KEY);
+    return denunciasJSON ? JSON.parse(denunciasJSON) : [];
 };
 
-// -------------------------
-// 1. Carregar Dados Denúncia
-// -------------------------
-async function carregarDadosDenuncia() {
-console.log("ID buscado:", currentDenunciaId);
-  if (!currentDenunciaId) {
-    document.getElementById("cartao-title").textContent = "Nova Denúncia";
-    document.getElementById("btn-delete").style.display = "none";
-    renderizarTimeline([]);
-    updateSelectedFilesUI();
-    return;
-  }
-  try {
-    const res = await fetch(`${API_URL}/${currentDenunciaId}`);
-    console.log("Resposta fetch:", res.status, await res.clone().text());
-    if (!res.ok) throw new Error();
-    const denuncia = await res.json();
+// Função para salvar as denúncias no localStorage
+const saveDenunciasToStorage = (denuncias) => {
+    localStorage.setItem(DENUNCIAS_STORAGE_KEY, JSON.stringify(denuncias));
+};
 
-    denunciaParaEdicao = {
-      ...denuncia,
-      endereco: denuncia.endereco || {},
-      timeline: Array.isArray(denuncia.timeline) ? denuncia.timeline : []
-    };
+// Função para carregar as denúncias iniciais do arquivo JSON (apenas na primeira vez)
+const inicializarDenuncias = async () => {
+    let denuncias = getDenunciasFromStorage();
+    if (denuncias.length === 0) {
+        try {
+            console.log("LocalStorage vazio. Tentando carregar de denuncias.json...");
+            const response = await fetch('denuncias.json');
+            if (!response.ok) {
+                throw new Error(`Erro ao carregar o arquivo JSON: ${response.statusText}`);
+            }
+            const denunciasDoJson = await response.json();
+            saveDenunciasToStorage(denunciasDoJson);
+            console.log("Denúncias carregadas do JSON e salvas no localStorage.");
+            return denunciasDoJson;
+        } catch (error) {
+            console.error("Não foi possível carregar as denúncias iniciais do arquivo denuncias.json.", error);
+            // Se falhar, o sistema continua com a lista vazia.
+            return [];
+        }
+    }
+    return denuncias;
+};
 
-    document.getElementById("cartao-title").textContent = "Editar Denúncia";
-    document.getElementById("denuncia-titulo-input").value = denuncia.titulo || "";
-    document.querySelector("select[name='categoria']").value = denuncia.categoria || "";
-    document.getElementById("update-description").value = denuncia.descricao || "";
-    // Endereço
-    document.getElementById("cep-input").value = denuncia.endereco?.cep || "";
-    document.getElementById("logradouro-input").value = denuncia.endereco?.logradouro || "";
-    document.getElementById("bairro-input").value = denuncia.endereco?.bairro || "";
-    document.getElementById("cidade-input").value = denuncia.endereco?.cidade || "";
-    document.getElementById("estado-input").value = denuncia.endereco?.estado || "";
 
-    document.getElementById("btn-delete").style.display = "inline-block";
-    renderizarTimeline(denunciaParaEdicao.timeline);
-    updateSelectedFilesUI();
-  } catch {
-    alert("Denúncia não encontrada. Redirecionando.");
-    window.location.href = "feed.html";
-  }
-}
+const generateUniqueId = () => {
+    return '_' + Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
+};
 
-// --------------
-// 2. Timeline UI
-// --------------
-function renderizarTimeline(timelineArray) {
-  const container = document.getElementById("denuncia-timeline-container");
-  if (!timelineArray || !timelineArray.length) {
-    container.innerHTML = '<p>Nenhum histórico para esta denúncia ainda.</p>';
-    return;
-  }
-  const ul = document.createElement('ul');
-  ul.classList.add('timeline-list');
-  timelineArray
-    .slice().sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
-    .forEach(evento => {
-      const li = document.createElement('li');
-      li.classList.add('timeline-item');
-      li.innerHTML = `
-        <div class="timeline-item-status">${evento.status}</div>
-        <div class="timeline-item-timestamp">${formatarTimestamp(evento.timestamp)}</div>
-        ${evento.notas ? `<div class="timeline-item-notes">${evento.notas}</div>` : ""}
-      `;
-      ul.appendChild(li);
+const formatarTimestamp = (isoTimestamp) => {
+    if (!isoTimestamp) return 'Data indisponível';
+    const data = new Date(isoTimestamp);
+    return data.toLocaleString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
     });
-  container.innerHTML = '';
-  container.appendChild(ul);
-}
+};
 
-function formatarTimestamp(iso) {
-  if (!iso) return '';
-  const data = new Date(iso);
-  return data.toLocaleString('pt-BR', {
-    day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'
-  });
-}
 
-// -------------------------
-// 3. Controle de Mídia UI
-// -------------------------
-function updateSelectedFilesUI() {
-  const el = document.getElementById("selected-files-info");
-  let html = '';
-  // Imagem
-  if (denunciaParaEdicao.imagem) {
-    html += `
-      <div class="media-preview-container">
-        <p>Imagem:</p>
-        <img src="${denunciaParaEdicao.imagem}" alt="Pré-visualização da imagem" class="media-preview" style="max-width:160px;max-height:120px;border-radius:8px;">
-        <button class="btn-remove-media" data-type="image">Remover Imagem</button>
-      </div>
-    `;
-  }
-  // Vídeo
-  if (denunciaParaEdicao.video) {
-    html += `
-      <div class="media-preview-container">
-        <p>Vídeo:</p>
-        <video controls class="media-preview" style="max-width:220px;max-height:140px;border-radius:8px;">
-          <source src="${denunciaParaEdicao.video}">
-          Seu navegador não suporta vídeo.
-        </video>
-        <button class="btn-remove-media" data-type="video">Remover Vídeo</button>
-      </div>
-    `;
-  }
-  el.innerHTML = html || '<p>Nenhuma mídia adicionada.</p>';
+if (nomePaginaAtual === 'denuncias.html' || nomePaginaAtual === '' || nomePaginaAtual === 'index.html') {
+    console.log("Executando script para a página de listagem de denúncias.");
+    const listaDenunciasContainer = document.getElementById('lista-denuncias-container');
+    const btnNovaDenuncia = document.getElementById('btn-nova-denuncia');
 
-  document.querySelectorAll('.btn-remove-media').forEach(button => {
-    button.onclick = (e) => {
-      const tipo = e.target.dataset.type;
-      if (tipo === 'image') denunciaParaEdicao.imagem = null;
-      if (tipo === 'video') denunciaParaEdicao.video = null;
-      updateSelectedFilesUI();
+    const renderizarDenuncias = async () => {
+        if (!listaDenunciasContainer) {
+            console.error("Elemento 'lista-denuncias-container' não encontrado.");
+            return;
+        }
+        listaDenunciasContainer.innerHTML = '';
+        
+        // MODIFICAÇÃO: Carrega as denúncias com a nova lógica
+        let denuncias = await inicializarDenuncias();
+
+        if (denuncias.length === 0) {
+            listaDenunciasContainer.innerHTML = '<p>Nenhuma denúncia registrada ainda. Clique em "Nova Denúncia" para começar.</p>';
+            return;
+        }
+
+        denuncias.forEach(denuncia => {
+            const card = document.createElement('div');
+            card.classList.add('denuncia-card');
+            card.setAttribute('data-id', denuncia.id);
+            let descBreve = denuncia.descricao ? denuncia.descricao : 'Sem descrição detalhada.';
+            if (descBreve.length > 100) {
+                descBreve = descBreve.substring(0, 100) + '...';
+            }
+            card.innerHTML = `
+                <h3 class="denuncia-card-titulo">${denuncia.titulo || 'Denúncia Sem Título'}</h3>
+                <p class="denuncia-card-descricao">${descBreve}</p>
+            `;
+            card.addEventListener('click', () => {
+                window.location.href = `atualizar_denuncia.html?id=${denuncia.id}`;
+            });
+            listaDenunciasContainer.appendChild(card);
+        });
     };
-  });
-}
 
-// Adiciona imagem/vídeo (arquivo local, convertido em Base64)
-function handleFileSelect(event, tipo) {
-  const file = event.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onloadend = () => {
-    denunciaParaEdicao[tipo] = reader.result;
-    updateSelectedFilesUI();
-  };
-  reader.readAsDataURL(file);
-}
-
-// Permitir uso de URL externa
-function adicionarURLMedia(tipo) {
-  const url = prompt(`Cole a URL da ${tipo === 'imagem' ? 'imagem' : 'vídeo'} externa:`);
-  if (url && (url.startsWith('http://') || url.startsWith('https://'))) {
-    denunciaParaEdicao[tipo] = url;
-    updateSelectedFilesUI();
-  } else if (url) {
-    alert("URL inválida.");
-  }
-}
-
-// ----------------------
-// 4. Adicionar Timeline
-// ----------------------
-function adicionarEventoTimeline() {
-  const status = document.getElementById("timeline-new-status-select").value;
-  const notas = document.getElementById("timeline-new-notes").value.trim();
-  if (!status) {
-    alert("Selecione um status.");
-    return;
-  }
-  const evento = {
-    status: status,
-    timestamp: new Date().toISOString(),
-    notas: notas
-  };
-  if (!Array.isArray(denunciaParaEdicao.timeline)) denunciaParaEdicao.timeline = [];
-  denunciaParaEdicao.timeline.push(evento);
-  renderizarTimeline(denunciaParaEdicao.timeline);
-  document.getElementById("timeline-new-status-select").selectedIndex = 0;
-  document.getElementById("timeline-new-notes").value = "";
-}
-
-// ----------------------
-// 5. Salvar Atualização
-// ----------------------
-async function salvarAtualizacaoDenuncia(event) {
-  event.preventDefault();
-
-  // Monta objeto com todos os campos do formulário e da edição
-  const dadosAtualizados = {
-    titulo: document.getElementById("denuncia-titulo-input").value,
-    categoria: document.querySelector("select[name='categoria']").value,
-    descricao: document.getElementById("update-description").value,
-    endereco: {
-      cep: document.getElementById("cep-input").value,
-      logradouro: document.getElementById("logradouro-input").value,
-      bairro: document.getElementById("bairro-input").value,
-      cidade: document.getElementById("cidade-input").value,
-      estado: document.getElementById("estado-input").value
-    },
-    imagem: denunciaParaEdicao.imagem,
-    video: denunciaParaEdicao.video,
-    timeline: denunciaParaEdicao.timeline
-  };
-
-  try {
-    const response = await fetch(
-      currentDenunciaId ? `${API_URL}/${currentDenunciaId}` : API_URL,
-      {
-        method: currentDenunciaId ? "PATCH" : "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(dadosAtualizados)
-      }
-    );
-    if (!response.ok) throw new Error("Falha ao salvar denúncia");
-
-    alert("Denúncia salva com sucesso!");
-    window.location.href = currentDenunciaId
-      ? "comentarios.html?id=" + currentDenunciaId
-      : "feed.html";
-  } catch (err) {
-    alert("Erro ao salvar denúncia. Tente novamente.");
-  }
-}
-
-// ----------------------
-// 6. Excluir denúncia
-// ----------------------
-async function excluirDenuncia() {
-  if (!currentDenunciaId) return;
-  if (!confirm("Tem certeza que deseja excluir esta denúncia?")) return;
-
-  try {
-    const response = await fetch(`${API_URL}/${currentDenunciaId}`, { method: "DELETE" });
-    if (!response.ok) throw new Error("Falha ao excluir denúncia");
-
-    alert("Denúncia excluída com sucesso!");
-    window.location.href = "feed.html";
-  } catch (err) {
-    alert("Erro ao excluir denúncia. Tente novamente.");
-  }
-}
-
-// ----------------------
-// 7. Listeners
-// ----------------------
-document.addEventListener("DOMContentLoaded", () => {
-  carregarDadosDenuncia();
-
-  // Formulário principal
-  document.getElementById("btn-save").onclick = salvarAtualizacaoDenuncia;
-
-  // Timeline
-  document.getElementById("btn-add-timeline-event").onclick = adicionarEventoTimeline;
-
-  // Mídia: arquivo local
-  document.getElementById("btn-add-image").onclick = () => {
-    if (confirm("Deseja adicionar uma imagem do seu dispositivo? (Clique em 'Cancelar' para usar uma URL)")) {
-      document.getElementById("image-input").click();
-    } else {
-      adicionarURLMedia("imagem");
+    if (btnNovaDenuncia) {
+        btnNovaDenuncia.addEventListener('click', () => {
+            window.location.href = 'atualizar_denuncia.html';
+        });
     }
-  };
-  document.getElementById("btn-add-video").onclick = () => {
-    if (confirm("Deseja adicionar um vídeo do seu dispositivo? (Clique em 'Cancelar' para usar uma URL)")) {
-      document.getElementById("video-input").click();
-    } else {
-      adicionarURLMedia("video");
+    renderizarDenuncias();
+}
+
+
+if (nomePaginaAtual === 'atualizar_denuncia.html') {
+    console.log("Executando script para a página de atualização/criação de denúncia.");
+
+    const headerTitleEl = document.getElementById('header-title');
+    const cartaoTitleEl = document.getElementById('cartao-title');
+    const denunciaTituloInput = document.getElementById('denuncia-titulo-input');
+    const btnAddImage = document.getElementById('btn-add-image');
+    const btnAddVideo = document.getElementById('btn-add-video');
+    const imageInput = document.getElementById('image-input');
+    const videoInput = document.getElementById('video-input');
+    const updateDescription = document.getElementById('update-description');
+    const btnBack = document.getElementById('btn-back');
+    const btnSave = document.getElementById('btn-save');
+    const btnDelete = document.getElementById('btn-delete');
+    const selectedFilesInfoEl = document.getElementById('selected-files-info');
+    const denunciaTimelineContainerEl = document.getElementById('denuncia-timeline-container');
+    const timelineNewStatusSelect = document.getElementById('timeline-new-status-select');
+    const timelineNewNotesInput = document.getElementById('timeline-new-notes');
+    const btnAddTimelineEvent = document.getElementById('btn-add-timeline-event');
+
+    let currentDenunciaId = null;
+    let denunciaParaEdicao = {
+        titulo: '',
+        descricao: '',
+        imagem: null, // Armazenará a string Base64 da imagem
+        video: null,  // Armazenará a string Base64 do vídeo
+        timeline: []
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    currentDenunciaId = params.get('id');
+    
+    // #############################################################################
+    // ### INÍCIO DA GRANDE MUDANÇA: UI para exibir imagem e lógica de remoção  ###
+    // #############################################################################
+    const updateSelectedFilesUI = () => {
+        if (!selectedFilesInfoEl) return;
+        let infoHTML = '';
+        if (denunciaParaEdicao.imagem) {
+            // MODIFICADO: Exibe a imagem em vez de um link
+            infoHTML += `
+                <div class="media-preview-container">
+                    <p>Imagem Adicionada:</p>
+                    <img src="${denunciaParaEdicao.imagem}" alt="Pré-visualização da imagem" class="media-preview">
+                    <button class="btn-remove-media" data-type="image">Remover Imagem</button>
+                </div>`;
+        }
+        if (denunciaParaEdicao.video) {
+            // MODIFICADO: Exibe um player de vídeo. ATENÇÃO: Vídeos em Base64 podem ser muito grandes!
+             infoHTML += `
+                <div class="media-preview-container">
+                    <p>Vídeo Adicionado:</p>
+                    <video controls class="media-preview">
+                        <source src="${denunciaParaEdicao.video}">
+                        Seu navegador não suporta o player de vídeo.
+                    </video>
+                    <button class="btn-remove-media" data-type="video">Remover Vídeo</button>
+                </div>`;
+        }
+        selectedFilesInfoEl.innerHTML = infoHTML || '<p>Nenhuma mídia adicionada.</p>';
+
+        document.querySelectorAll('.btn-remove-media').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const type = e.target.dataset.type;
+                if (type === 'image') {
+                    denunciaParaEdicao.imagem = null;
+                    if (imageInput) imageInput.value = '';
+                } else if (type === 'video') {
+                    denunciaParaEdicao.video = null;
+                    if (videoInput) videoInput.value = '';
+                }
+                updateSelectedFilesUI();
+            });
+        });
+    };
+    // #############################################################################
+    // ### FIM DA GRANDE MUDANÇA: UI para exibir imagem e lógica de remoção      ###
+    // #############################################################################
+
+    const renderizarTimeline = (timelineArray) => {
+        if (!denunciaTimelineContainerEl) return;
+        denunciaTimelineContainerEl.innerHTML = '';
+        if (!timelineArray || timelineArray.length === 0) {
+            denunciaTimelineContainerEl.innerHTML = '<p>Nenhum histórico para esta denúncia ainda.</p>';
+            return;
+        }
+        const ul = document.createElement('ul');
+        ul.classList.add('timeline-list');
+        timelineArray.slice().sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).forEach(evento => {
+            const li = document.createElement('li');
+            li.classList.add('timeline-item');
+            li.innerHTML = `
+                <div class="timeline-item-status">${evento.status}</div>
+                <div class="timeline-item-timestamp">${formatarTimestamp(evento.timestamp)}</div>
+                ${evento.notas ? `<div class="timeline-item-notes">${evento.notas}</div>` : ''}
+            `;
+            ul.appendChild(li);
+        });
+        denunciaTimelineContainerEl.appendChild(ul);
+    };
+
+    const carregarDadosDenuncia = () => {
+        if (currentDenunciaId) {
+            const denuncias = getDenunciasFromStorage();
+            const encontrada = denuncias.find(d => d.id === currentDenunciaId);
+            if (encontrada) {
+                denunciaParaEdicao = { ...encontrada };
+                denunciaParaEdicao.timeline = Array.isArray(denunciaParaEdicao.timeline) ? denunciaParaEdicao.timeline : [];
+                if (headerTitleEl) headerTitleEl.textContent = "Editar Denúncia";
+                if (cartaoTitleEl) cartaoTitleEl.textContent = "Editar Denúncia";
+                if (denunciaTituloInput) denunciaTituloInput.value = denunciaParaEdicao.titulo;
+                if (updateDescription) updateDescription.value = denunciaParaEdicao.descricao;
+                if (btnDelete) btnDelete.style.display = 'inline-block';
+            } else {
+                alert("Denúncia não encontrada. Redirecionando para a lista.");
+                window.location.href = 'denuncias.html';
+                return;
+            }
+        } else {
+            if (headerTitleEl) headerTitleEl.textContent = "Radar Urbano";
+            if (cartaoTitleEl) cartaoTitleEl.textContent = "Criar Nova Denúncia";
+            if (btnDelete) btnDelete.style.display = 'none';
+            denunciaParaEdicao.timeline = [];
+        }
+        updateSelectedFilesUI();
+        renderizarTimeline(denunciaParaEdicao.timeline);
+    };
+
+    if (btnAddTimelineEvent) {
+        btnAddTimelineEvent.addEventListener('click', () => {
+            const novoStatus = timelineNewStatusSelect.value;
+            const novasNotas = timelineNewNotesInput.value.trim();
+            if (!novoStatus) {
+                alert("Por favor, selecione um status para adicionar ao histórico.");
+                timelineNewStatusSelect.focus();
+                return;
+            }
+            const novoEventoTimeline = {
+                status: novoStatus,
+                timestamp: new Date().toISOString(),
+                notas: novasNotas || ""
+            };
+            if (!Array.isArray(denunciaParaEdicao.timeline)) {
+                denunciaParaEdicao.timeline = [];
+            }
+            denunciaParaEdicao.timeline.push(novoEventoTimeline);
+            renderizarTimeline(denunciaParaEdicao.timeline);
+            timelineNewStatusSelect.selectedIndex = 0;
+            timelineNewNotesInput.value = '';
+        });
     }
-  };
-  document.getElementById("image-input").onchange = (event) => handleFileSelect(event, "imagem");
-  document.getElementById("video-input").onchange = (event) => handleFileSelect(event, "video");
 
-  // Voltar
-  document.getElementById("btn-back").onclick = () => window.history.back();
+    // #############################################################################
+    // ### INÍCIO DA GRANDE MUDANÇA: Lógica de captura da imagem com FileReader  ###
+    // #############################################################################
+    const handleFileSelect = (event, type) => {
+        const file = event.target.files[0];
+        if (!file) return;
 
-  // Excluir denúncia
-  document.getElementById("btn-delete").onclick = excluirDenuncia;
-});
+        const reader = new FileReader();
+
+        // A função onloadend é chamada quando a leitura do arquivo termina
+        reader.onloadend = () => {
+            // O resultado (reader.result) é a string Base64 da mídia
+            console.log(`Arquivo ${type} convertido para Base64.`);
+            if (type === 'image') {
+                denunciaParaEdicao.imagem = reader.result;
+            } else if (type === 'video') {
+                denunciaParaEdicao.video = reader.result;
+            }
+            // Atualiza a UI para mostrar a mídia
+            updateSelectedFilesUI();
+        };
+
+        // Inicia a leitura do arquivo. Isso dispara o 'onloadend' quando terminar.
+        reader.readAsDataURL(file);
+    };
+
+    if (btnAddImage && imageInput) {
+        btnAddImage.addEventListener('click', () => imageInput.click());
+        imageInput.addEventListener('change', (event) => handleFileSelect(event, 'image'));
+    }
+
+    if (btnAddVideo && videoInput) {
+        btnAddVideo.addEventListener('click', () => videoInput.click());
+        videoInput.addEventListener('change', (event) => handleFileSelect(event, 'video'));
+    }
+    // #############################################################################
+    // ### FIM DA GRANDE MUDANÇA: Lógica de captura da imagem                    ###
+    // #############################################################################
+
+
+    if (btnSave) {
+        btnSave.addEventListener('click', () => {
+            const titulo = denunciaTituloInput.value.trim();
+            const descricao = updateDescription.value.trim();
+            if (!titulo) {
+                alert("O título da denúncia é obrigatório.");
+                denunciaTituloInput.focus();
+                return;
+            }
+            if (!descricao && !denunciaParaEdicao.imagem && !denunciaParaEdicao.video) {
+                alert("Adicione uma descrição ou uma mídia (imagem/vídeo) para a denúncia.");
+                updateDescription.focus();
+                return;
+            }
+            let denuncias = getDenunciasFromStorage();
+            const dadosDenunciaAtualizada = {
+                ...denunciaParaEdicao,
+                titulo: titulo,
+                descricao: descricao,
+            };
+            if (currentDenunciaId) {
+                const index = denuncias.findIndex(d => d.id === currentDenunciaId);
+                if (index !== -1) {
+                    denuncias[index] = { ...denuncias[index], ...dadosDenunciaAtualizada };
+                }
+            } else {
+                dadosDenunciaAtualizada.id = generateUniqueId();
+                if (dadosDenunciaAtualizada.timeline.length === 0) {
+                    dadosDenunciaAtualizada.timeline.push({
+                        status: "Denúncia Criada",
+                        timestamp: new Date().toISOString(),
+                        notas: "Denúncia registrada pelo usuário."
+                    });
+                }
+                denuncias.push(dadosDenunciaAtualizada);
+            }
+            saveDenunciasToStorage(denuncias);
+            alert("Denúncia salva com sucesso!");
+            window.location.href = 'denuncias.html';
+        });
+    }
+
+    if (btnDelete) {
+        btnDelete.addEventListener('click', () => {
+            if (!currentDenunciaId) return;
+            if (confirm("Tem certeza que deseja excluir esta denúncia? Esta ação não pode ser desfeita.")) {
+                let denuncias = getDenunciasFromStorage();
+                denuncias = denuncias.filter(d => d.id !== currentDenunciaId);
+                saveDenunciasToStorage(denuncias);
+                alert("Denúncia excluída com sucesso!");
+                window.location.href = 'denuncias.html';
+            }
+        });
+    }
+
+    if (btnBack) {
+        btnBack.addEventListener('click', () => {
+            window.location.href = '/views/home_page.html';
+        });
+    }
+
+    carregarDadosDenuncia();
+}
+
+console.log("Fim da execução do script.js. Página atual:", nomePaginaAtual);
