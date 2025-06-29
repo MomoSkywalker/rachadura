@@ -1,10 +1,18 @@
-// A função verificarLoginERedirecionar foi REMOVIDA daqui, pois agora está no auth.js
+// A função verificarLoginERedirecionar deve vir do seu arquivo auth.js
 
 document.addEventListener('DOMContentLoaded', () => {
 
     // 1. Chama a função que agora existe globalmente graças ao arquivo auth.js
     if (!verificarLoginERedirecionar("Você precisa estar logado para cadastrar uma denúncia.")) {
         return; 
+    }
+
+    // ---> NOVO: INICIALIZAÇÃO DA MÁSCARA DE CEP <---
+    // Acessa o input de CEP que está dentro do app Vue pelo seu v-model e @blur
+    const cepInput = document.querySelector('#appCep input[v-model="endereco.cep"]');
+    if(cepInput) {
+        // Aplica a máscara no formato 00000-000
+        const cepMask = IMask(cepInput, { mask: '00000-000' });
     }
 
     // O resto do seu código Vue.js continua normalmente...
@@ -20,12 +28,13 @@ document.addEventListener('DOMContentLoaded', () => {
         };
       },
       methods: {
-        // ... TODAS AS SUAS FUNÇÕES methods (cepAlteradoEvento, geocodificarEndereco, etc.) FICAM AQUI ...
-        // Nenhuma mudança é necessária dentro de 'methods'.
-        // Cole aqui todo o bloco 'methods: { ... }' da sua versão anterior.
         cepAlteradoEvento() {
-          if (!this.endereco.cep) return;
-          axios.get(`https://viacep.com.br/ws/${this.endereco.cep}/json/`)
+          // ---> ALTERADO: Usa o valor do CEP sem máscara para a busca na API <---
+          const cepLimpo = this.endereco.cep.replace(/\D/g, ''); // Remove traços, pontos, etc.
+
+          if (cepLimpo.length !== 8) return; // A verificação agora é feita com os 8 dígitos limpos
+
+          axios.get(`https://viacep.com.br/ws/${cepLimpo}/json/`)
             .then(response => {
               const bean = response.data;
               if (bean.erro) {
@@ -128,19 +137,14 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       mounted() {
         const form = document.getElementById("formDenuncia");
+        form.addEventListener("submit", this.enviarFormulario);
+
         const botaoCancelar = document.getElementById("btn-back");
-        if (form) {
-          form.addEventListener("submit", this.enviarFormulario);
-        }
-        if (botaoCancelar) {
-          botaoCancelar.addEventListener("click", (event) => {
+        botaoCancelar.addEventListener("click", (event) => {
             event.preventDefault();
             form.reset();
-            this.endereco = { cep: "", logradouro: "", numero: "", estado: "", cidade: "", bairro: "", lat: null, lng: null };
-            this.enderecoBloqueado = false;
             window.location.href = "/views/home_page.html";
           });
-        }
         this.mostrarTabela();
       }
     }).mount("#appCep");
