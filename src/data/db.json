@@ -1,5 +1,143 @@
 {
-
+  
+"feed": [
+    {
+      "id": 1,
+      "usuario": "joao_silva",
+      "foto_perfil": "https://randomuser.me/api/portraits/men/1.jpg",
+      "imagem_denuncia": "https://img.nsctotal.com.br/wp-content/uploads/2023/05/AdobeStock_282004392-800x531.jpeg",
+      "descricao": "Buraco enorme na Rua dos Goitacazes, próximo ao número 1400. Difícil para carros e perigoso para pedestres.",
+      "localizacao": "Rua dos Goitacazes, Centro",
+      "categoria": "Buracos"
+    },
+    {
+      "id": 2,
+      "usuario": "maria_oliveira",
+      "foto_perfil": "https://randomuser.me/api/portraits/women/2.jpg",
+      "imagem_denuncia": "https://sertao24horas.com.br/wp-content/uploads/2024/02/WhatsApp-Image-2024-02-21-at-15.22.16.jpeg",
+      "descricao": "Semáforo quebrado há dias, causando confusão no cruzamento.",
+      "localizacao": "Avenida Afonso Pena, esquina com Rua da Bahia",
+      "categoria": "Semáforos"
+    },
+    {
+      "id": 3,
+      "usuario": "carlos_pereira",
+      "foto_perfil": "https://randomuser.me/api/portraits/men/3.jpg",
+      "imagem_denuncia": "https://img.nsctotal.com.br/wp-content/uploads/2022/10/vazamento-adutora-1.jpg",
+      "descricao": "Vazamento de água constante, já está formando poça na calçada.",
+      "localizacao": "Rua Padre Eustáquio, bairro Padre Eustáquio",
+      "categoria": "Vazamento de água"
+    },
+    {
+      "id": 4,
+      "usuario": "ana_souza",
+      "foto_perfil": "https://randomuser.me/api/portraits/women/4.jpg",
+      "imagem_denuncia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSCPiTnYOa1RMAAogsCWFUsfpqpyExbV0DEg&s",
+      "descricao": "Poste de luz apagado há semanas, rua fica muito escura à noite.",
+      "localizacao": "Rua Sapucaí, Floresta",
+      "categoria": "Postes de luz"
+    },
+    {
+      "id": 5,
+      "usuario": "pedro_santos",
+      "foto_perfil": "https://randomuser.me/api/portraits/men/5.jpg",
+      "imagem_denuncia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpEKhO2z6GWsfpoXfHAwkVEtdB_eRWKlzXaQ&s",
+      "descricao": "Buraco profundo na Rua dos Tupinambás, próximo ao número 500. Risco de acidente para motociclistas.",
+      "localizacao": "Rua dos Tupinambás, Centro",
+      "categoria": "Buracos"
+    },
+    {
+      "id": 6,
+      "usuario": "julia_lima",
+      "foto_perfil": "https://randomuser.me/api/portraits/women/6.jpg",
+      "imagem_denuncia": "https://cdn6.campograndenews.com.br/uploads/noticias/2022/02/07/aef38022b0b5da27e62c15b7541c9754cb9253d3.jpeg",
+      "descricao": "Vários buracos na Avenida Amazonas, próximo ao Shopping Cidade. Necessário reparo urgente.",
+      "localizacao": "Avenida Amazonas, Centro",
+      "categoria": "Buracos"
+    }
+  ],
+  
+"usuarios": [
+  {
+    "id": "user_63023",
+    "nome": "João Silva",
+    "usuario": "joao_silva",
+    "foto_perfil": "https://randomuser.me/api/portraits/men/1.jpg",
+    "email": "joao@email.com",
+    "senha_hash": "$2b$12$ExemploHashJoaoSilva",
+    "data_criacao": "2025-06-10T12:00:00.000Z",
+    "nivel": "usuario",
+    "status": "ativo",
+    "tentativas_login": 0,
+    "ultima_atividade": "2025-06-12T09:30:00.000Z"
+  },
+  {
+    "id": "user_53421",
+    "nome": "Maria Oliveira",
+    "usuario": "maria_oliveira",
+    "foto_perfil": "https://randomuser.me/api/portraits/women/2.jpg",
+    "email": "maria@email.com",
+    "senha_hash": "$2b$12$ExemploHashMariaOliveira",
+    "data_criacao": "2025-06-11T14:45:00.000Z",
+    "nivel": "usuario",
+    "status": "ativo",
+    "tentativas_login": 0,
+    "ultima_atividade": "2025-06-12T11:11:00.000Z"
+  },
+  {
+    "id": "user_12345",
+    "nome": "Carlos Pereira",
+    "usuario": "carlos_pereira",
+    "foto_perfil": "https://randomuser.me/api/portraits/men/3.jpg",
+    "email": "carlos@email.com",
+    "senha_hash": "$2b$12$ExemploHashCarlosPereira",
+    "data_criacao": "2025-06-11T17:25:00.000Z",
+    "nivel": "usuario",
+    "status": "ativo",
+    "tentativas_login": 0,
+    "ultima_atividade": "2025-06-12T12:01:00.000Z"
+  },
+  {
+    "id": "user_67890",
+    "nome": "Ana Souza",
+    "usuario": "ana_souza",
+    "foto_perfil": "https://randomuser.me/api/portraits/women/4.jpg",
+    "email": "ana@email.com",
+    "senha_hash": "$2b$12$ExemploHashAnaSouza",
+    "data_criacao": "2025-06-12T10:01:00.000Z",
+    "nivel": "usuario",
+    "status": "ativo",
+    "tentativas_login": 0,
+    "ultima_atividade": "2025-06-12T12:02:00.000Z"
+  },
+  {
+    "id": "user_54321",
+    "nome": "Pedro Santos",
+    "usuario": "pedro_santos",
+    "foto_perfil": "https://randomuser.me/api/portraits/men/5.jpg",
+    "email": "pedro@email.com",
+    "senha_hash": "$2b$12$ExemploHashPedroSantos",
+    "data_criacao": "2025-06-12T10:15:00.000Z",
+    "nivel": "usuario",
+    "status": "ativo",
+    "tentativas_login": 0,
+    "ultima_atividade": "2025-06-12T12:03:00.000Z"
+  },
+  {
+    "id": "user_45678",
+    "nome": "Julia Lima",
+    "usuario": "julia_lima",
+    "foto_perfil": "https://randomuser.me/api/portraits/women/6.jpg",
+    "email": "julia@email.com",
+    "senha_hash": "$2b$12$ExemploHashJuliaLima",
+    "data_criacao": "2025-06-12T10:20:00.000Z",
+    "nivel": "usuario",
+    "status": "ativo",
+    "tentativas_login": 0,
+    "ultima_atividade": "2025-06-12T12:04:00.000Z"
+  }
+],
+  
   "denuncias": [
     {
       "id": "0bd2",
@@ -336,62 +474,6 @@
     "resposta": "\nO extrato de transações está disponível na seção 'Histórico' do seu painel de usuário.\n",
     "dataCriacao": "2024-05-24"
   }
-],
+]
 
-"feed": [
-    {
-      "id": 1,
-      "usuario": "joao_silva",
-      "foto_perfil": "https://randomuser.me/api/portraits/men/1.jpg",
-      "imagem_denuncia": "https://img.nsctotal.com.br/wp-content/uploads/2023/05/AdobeStock_282004392-800x531.jpeg",
-      "descricao": "Buraco enorme na Rua dos Goitacazes, próximo ao número 1400. Difícil para carros e perigoso para pedestres.",
-      "localizacao": "Rua dos Goitacazes, Centro",
-      "categoria": "Buracos"
-    },
-    {
-      "id": 2,
-      "usuario": "maria_oliveira",
-      "foto_perfil": "https://randomuser.me/api/portraits/women/2.jpg",
-      "imagem_denuncia": "https://sertao24horas.com.br/wp-content/uploads/2024/02/WhatsApp-Image-2024-02-21-at-15.22.16.jpeg",
-      "descricao": "Semáforo quebrado há dias, causando confusão no cruzamento.",
-      "localizacao": "Avenida Afonso Pena, esquina com Rua da Bahia",
-      "categoria": "Semáforos"
-    },
-    {
-      "id": 3,
-      "usuario": "carlos_pereira",
-      "foto_perfil": "https://randomuser.me/api/portraits/men/3.jpg",
-      "imagem_denuncia": "https://img.nsctotal.com.br/wp-content/uploads/2022/10/vazamento-adutora-1.jpg",
-      "descricao": "Vazamento de água constante, já está formando poça na calçada.",
-      "localizacao": "Rua Padre Eustáquio, bairro Padre Eustáquio",
-      "categoria": "Vazamento de água"
-    },
-    {
-      "id": 4,
-      "usuario": "ana_souza",
-      "foto_perfil": "https://randomuser.me/api/portraits/women/4.jpg",
-      "imagem_denuncia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSCPiTnYOa1RMAAogsCWFUsfpqpyExbV0DEg&s",
-      "descricao": "Poste de luz apagado há semanas, rua fica muito escura à noite.",
-      "localizacao": "Rua Sapucaí, Floresta",
-      "categoria": "Postes de luz"
-    },
-    {
-      "id": 5,
-      "usuario": "pedro_santos",
-      "foto_perfil": "https://randomuser.me/api/portraits/men/5.jpg",
-      "imagem_denuncia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpEKhO2z6GWsfpoXfHAwkVEtdB_eRWKlzXaQ&s",
-      "descricao": "Buraco profundo na Rua dos Tupinambás, próximo ao número 500. Risco de acidente para motociclistas.",
-      "localizacao": "Rua dos Tupinambás, Centro",
-      "categoria": "Buracos"
-    },
-    {
-      "id": 6,
-      "usuario": "julia_lima",
-      "foto_perfil": "https://randomuser.me/api/portraits/women/6.jpg",
-      "imagem_denuncia": "https://cdn6.campograndenews.com.br/uploads/noticias/2022/02/07/aef38022b0b5da27e62c15b7541c9754cb9253d3.jpeg",
-      "descricao": "Vários buracos na Avenida Amazonas, próximo ao Shopping Cidade. Necessário reparo urgente.",
-      "localizacao": "Avenida Amazonas, Centro",
-      "categoria": "Buracos"
-    }
-  ]
 }
