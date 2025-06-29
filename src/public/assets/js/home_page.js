@@ -44,7 +44,7 @@ function renderizarMarcadores() {
   const filtro = document.getElementById("filtroCategoria").value;
   console.log(`Aplicando filtro: ${filtro}`);
 
-  denuncias.forEach((denuncia, denuncia.id) => {
+  denuncias.forEach((denuncia) => {
     // Verifica se tem coordenadas válidas
     if (!denuncia.lat || !denuncia.lng) {
       console.warn(`Denúncia ${denuncia.id} sem coordenadas válidas:`, denuncia);
