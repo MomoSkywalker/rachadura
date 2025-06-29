@@ -56,27 +56,36 @@ async function renderDenuncia() {
   else if (denuncia.imagem) midiasHtml = `<img src="${denuncia.imagem}" style="max-width:420px;margin:10px 0;border-radius:10px;">`;
 
   document.getElementById("denunciaDetalhe").innerHTML = `
-    <h2>${denuncia.titulo || "-"}</h2>
-    <div class="perfil">
-      <img src="${usuario.foto_perfil}" alt="Perfil" class="icone" style="width:32px;height:32px;border-radius:50%;">
-      <span class="usuario">${usuario.nome}</span>
+  <div class="card shadow-sm border-0 mb-3" style="max-width: 620px; margin:auto;">
+    <div class="card-body">
+      <div class="d-flex align-items-center mb-3">
+        <img src="${usuario.foto_perfil}" class="rounded-circle me-3" width="48" height="48" alt="Usuário">
+        <div>
+          <h5 class="card-title mb-0">${denuncia.titulo || "-"}</h5>
+          <small class="text-muted">${usuario.nome}</small>
+        </div>
+      </div>
+      ${midiasHtml}
+      <p class="card-text mt-2">${denuncia.descricao || ""}</p>
+      <div class="mb-2">
+        <span class="fw-semibold">Endereço:</span> ${enderecoFormatado || "-"}
+      </div>
+      <div class="mb-3">
+        <span class="fw-semibold">Categoria:</span> ${denuncia.categoria || "-"}
+      </div>
+      <div>
+        <button class="btn btn-outline-success btn-sm me-2 botao-curtir${jaCurtiu ? " ativo" : ""}" id="likeBtn">👍 <span>${likes.length}</span></button>
+        <button class="btn btn-outline-danger btn-sm me-2 botao-descurtir${jaDescurtiu ? " ativo" : ""}" id="dislikeBtn">👎 <span>${dislikes.length}</span></button>
+        ${
+          usuarioId === denuncia.usuarioId
+            ? `<button class="btn btn-primary btn-sm me-2" id="editBtn">Editar</button>
+               <button class="btn btn-outline-secondary btn-sm" id="deleteBtn">Excluir</button>`
+            : ""
+        }
+      </div>
     </div>
-    <div class="descricao" style="margin:10px 0;">${denuncia.descricao || ""}</div>
-    <div class="localizacao"><b>Endereço:</b> ${enderecoFormatado}</div>
-    <div class="categoria"><b>Categoria:</b> ${denuncia.categoria || ""}</div>
-    ${midiasHtml}
-    <div>
-      <button class="botao-curtir${jaCurtiu ? " ativo" : ""}" id="likeBtn">👍 (${likes.length})</button>
-      <button class="botao-descurtir${jaDescurtiu ? " ativo" : ""}" id="dislikeBtn">👎 (${dislikes.length})</button>
-      ${
-        usuarioId === denuncia.usuarioId
-          ? `<button class="botao-editar" id="editBtn">Editar</button>
-             <button class="botao-excluir" id="deleteBtn">Excluir</button>`
-          : ""
-      }
-    </div>
-  `;
-
+  </div>
+`;
   // Listeners dos botões
   if (usuarioId) {
     document.getElementById("likeBtn").onclick = async () => await votarLikeDislike(true);
@@ -142,23 +151,30 @@ async function renderTimeline() {
 async function renderComentarios() {
   const [usuarios, comentarios] = await Promise.all([getUsuarios(), getComentarios()]);
   const lista = document.getElementById("listaComentarios");
-  lista.innerHTML = "";
+
   if (!comentarios.length) {
     lista.innerHTML = "<p>Seja o primeiro a comentar!</p>";
     return;
   }
+
+  let comentariosHtml = `<ul class="list-group">`;
   comentarios.forEach(c => {
-    const user = usuarios.find(u => u.id === c.usuarioId) || {nome:"Desconhecido",foto_perfil:"https://placehold.co/32x32"};
-    lista.innerHTML += `
-      <div class="comentario-bloco">
-        <img src="${user.foto_perfil}" class="foto-comentario">
-        <span class="usuario-comentario">${user.nome}</span>
-        <span class="data-comentario">${c.data ? new Date(c.data).toLocaleString() : ""}</span>
-        <div class="texto-comentario">${c.texto}</div>
-      </div>
+    const user = usuarios.find(u => u.id === c.usuarioId) || { nome: "Desconhecido", foto_perfil: "https://placehold.co/32x32" };
+    comentariosHtml += `
+      <li class="list-group-item d-flex align-items-start">
+        <img src="${user.foto_perfil}" class="rounded-circle me-2" width="32" height="32" alt="Usuário">
+        <div>
+          <span class="fw-bold">${user.nome}</span>
+          <span class="text-muted ms-2">${c.data ? new Date(c.data).toLocaleString() : ""}</span>
+          <div class="mt-1">${c.texto}</div>
+        </div>
+      </li>
     `;
   });
+  comentariosHtml += "</ul>";
+  lista.innerHTML = comentariosHtml;
 }
+
 
 // Envia novo comentário
 document.addEventListener("DOMContentLoaded", () => {
