@@ -171,3 +171,26 @@
   display: inline-block;
   text-align: center;
 }
+
+/* Adicione este trecho ao final de comentarios.css */
+
+.midias-timeline {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.midias-timeline img {
+    max-width: 120px; /* Tamanho menor para não poluir a timeline */
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+
+.midias-timeline img:hover {
+    transform: scale(1.05);
+    z-index: 10;
+}
